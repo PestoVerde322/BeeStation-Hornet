@@ -112,45 +112,25 @@
 	desc = "A sign labelling the atmospherics division of the station. Making Comrade Dyatlov proud since April 26th, 1981."
 	icon_state = "minskyatmo"
 
-/obj/structure/sign/departments/minsky/medical/medical1
+/obj/structure/sign/departments/minsky/medical/medical
 	name = "Medical Department"
 	desc = "A sign labelling the medical department of the station. You'll probably get treatment here."
 	icon_state = "minskymedic"
 
-/obj/structure/sign/departments/minsky/medical/medical2
-	name = "Medical Department"
-	desc = "A sign labelling the medical department of the station. You'll probably get treatment here."
-	icon_state = "minskymedicb"
-
-/obj/structure/sign/departments/minsky/medical/clone/cloning1
+/obj/structure/sign/departments/minsky/medical/clone/cloning
 	name = "Cloning Division"
 	desc = "A sign labelling the cloning division of the station. Your last hope."
 	icon_state = "minskyclone"
 
-/obj/structure/sign/departments/minsky/medical/clone/cloning2
-	name = "Cloning Division"
-	desc = "A sign labelling the cloning division of the station. Your last hope."
-	icon_state = "minskycloneb"
-
-/obj/structure/sign/departments/minsky/medical/chemistry/chemical1
+/obj/structure/sign/departments/minsky/medical/chemistry/chemical
 	name = "Chemistry Division"
 	desc = "A sign labelling the chemicals division of the station. Similar to the kitchens, just don't lick the spoon."
 	icon_state = "minskychem"
 
-/obj/structure/sign/departments/minsky/medical/chemistry/chemical2
-	name = "Chemistry Division"
-	desc = "A sign labelling the chemicals division of the station. Similar to the kitchens, just don't lick the spoon."
-	icon_state = "minskychemb"
-
-/obj/structure/sign/departments/minsky/medical/virology/virology1
+/obj/structure/sign/departments/minsky/medical/virology/virology
 	name = "Virology Division"
 	desc = "A sign labelling the virology division of the station. Free hugs!!!."
 	icon_state = "minskyviro"
-
-/obj/structure/sign/departments/minsky/medical/virology/virology2
-	name = "Virology Division"
-	desc = "A sign labelling the virology division of the station. Free hugs!!!."
-	icon_state = "minskyvirob"
 
 /obj/structure/sign/departments/minsky/security/security
 	name = "Security Department"
