@@ -77,8 +77,6 @@
 			new /obj/item/stack/sheet/glass(get_turf(src), glass_amt)
 		qdel(src)
 
-
-
 // APC HULL
 /obj/item/wallframe/apc
 	name = "\improper APC frame"
@@ -87,13 +85,12 @@
 	result_path = /obj/machinery/power/apc
 	inverse = 1
 
-
 /obj/item/wallframe/apc/try_build(turf/on_wall, user)
 	if(!..())
 		return
 	var/turf/T = get_turf(on_wall) //the user is not where it needs to be.
 	var/area/A = get_area(user)
-	if(A.get_apc())
+	if(A.apc)
 		to_chat(user, "<span class='warning'>This area already has an APC!</span>")
 		return //only one APC per area
 	if(!A.requires_power)
@@ -108,7 +105,6 @@
 			to_chat(user, "<span class='notice'>You cut the cables and disassemble the unused power terminal.</span>")
 			qdel(E)
 	return TRUE
-
 
 /obj/item/electronics
 	desc = "Looks like a circuit. Probably is."
