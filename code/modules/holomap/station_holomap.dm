@@ -6,8 +6,8 @@
 // Credit to polaris for the code which this current map was originally based off of, and credit to VG for making it in the first place.
 
 /obj/machinery/station_map
-	name = "\improper ship holomap"
-	desc = "A virtual map of the surrounding ship."
+	name = "\improper station holomap"
+	desc = "A virtual map of the surrounding station."
 	icon = 'icons/holomap/stationmap.dmi'
 	icon_state = "station_map"
 	layer = ABOVE_WINDOW_LAYER

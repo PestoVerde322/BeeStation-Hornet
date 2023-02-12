@@ -14,17 +14,11 @@
 /area/ruin
 	holomap_should_draw = FALSE
 
-/area/nsv/boarding_pod
-	holomap_should_draw = FALSE
-
 // Command //
 /area/bridge
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/ai_monitored
-	holomap_color = HOLOMAP_AREACOLOR_COMMAND
-
-/area/nsv/briefingroom
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/maintenance/department/bridge
@@ -79,13 +73,7 @@
 /area/hallway/secondary/construction
 	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
-/area/nsv/engine/engine_room
-	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
-
 /area/engine
-	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
-
-/area/maintenance/nsv/ftlroom
 	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 // Service //
@@ -186,9 +174,6 @@
 
 /area/hallway/upper/secondary/entry
 	holomap_color = HOLOMAP_AREACOLOR_ARRIVALS
-
-/area/nsv/engine/corridor
-	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 // Maints //
 /area/maintenance
