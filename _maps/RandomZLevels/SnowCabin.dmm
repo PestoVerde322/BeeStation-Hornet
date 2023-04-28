@@ -2790,8 +2790,8 @@
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "iD" = (
-/obj/structure/closet/acloset,
 /obj/item/clothing/suit/hooded/bloated_human,
+/obj/structure/closet/abductor,
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "iE" = (
@@ -2818,8 +2818,8 @@
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "iI" = (
-/obj/structure/closet/acloset,
 /obj/item/toy/foamblade,
+/obj/structure/closet/abductor,
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "iJ" = (
