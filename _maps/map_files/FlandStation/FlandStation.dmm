@@ -3293,8 +3293,8 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/item/radio/intercom{
-	pixel_x = -28
+/obj/structure/extinguisher_cabinet{
+	pixel_x = -26
 	},
 /turf/open/floor/plasteel/dark/airless,
 /area/medical/surgery)
@@ -10745,6 +10745,9 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/purple/opposingcorners,
+/obj/structure/extinguisher_cabinet{
+	pixel_y = -30
+	},
 /turf/open/floor/plasteel/grid/steel,
 /area/medical/apothecary)
 "cQD" = (
@@ -21510,7 +21513,7 @@
 "fEu" = (
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/stripes/closeup,
-/obj/machinery/door/airlock/medical/glass{
+/obj/machinery/door/airlock/medical{
 	name = "Surgery";
 	req_access_txt = "45"
 	},
@@ -47393,6 +47396,9 @@
 /obj/machinery/light_switch{
 	pixel_x = 24;
 	pixel_y = 24
+	},
+/obj/structure/extinguisher_cabinet{
+	pixel_y = 30
 	},
 /turf/open/floor/plasteel/dark,
 /area/medical/surgery)
@@ -82783,12 +82789,12 @@
 "vhn" = (
 /obj/structure/bed,
 /obj/item/bedsheet/rd,
-/obj/machinery/light_switch{
-	pixel_x = -24;
-	pixel_y = 24
-	},
 /obj/machinery/newscaster{
 	pixel_y = -28
+	},
+/obj/machinery/light_switch{
+	pixel_x = -24;
+	pixel_y = -8
 	},
 /turf/open/floor/carpet/purple,
 /area/crew_quarters/heads/hor)
@@ -90389,6 +90395,9 @@
 /area/science/lobby)
 "wQP" = (
 /obj/effect/turf_decal/tile/purple,
+/obj/effect/turf_decal/trimline/purple/filled/corner{
+	dir = 1
+	},
 /turf/open/floor/plasteel/white,
 /area/science/lobby)
 "wQQ" = (
@@ -92689,6 +92698,9 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/bot,
+/obj/structure/extinguisher_cabinet{
+	pixel_x = -26
+	},
 /turf/open/floor/plasteel/dark/side{
 	dir = 8
 	},
@@ -94102,9 +94114,6 @@
 /obj/item/gps,
 /obj/item/clothing/glasses/science,
 /obj/item/assembly/flash/handheld/weak,
-/obj/item/radio/intercom{
-	pixel_y = -28
-	},
 /obj/item/assembly/signaler,
 /obj/effect/turf_decal/siding/dark/corner,
 /obj/effect/turf_decal/trimline/purple/filled/corner{
