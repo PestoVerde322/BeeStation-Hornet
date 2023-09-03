@@ -217,6 +217,15 @@
 			to_chat(user, "<span class='warning'>You strain, but can't seem to fart again just yet.</span>")
 		return TRUE
 
+//Peak Felinid gameplay
+/datum/emote/living/carbon/human/felinid/nya
+	key = "nya"
+	key_third_person = "nyas"
+	message = "lets out a nya"
+	emote_type = EMOTE_AUDIBLE
+	vary = TRUE
+	sound = 'sound/emotes/nyaa.ogg'
+
 // Robotic Tongue emotes. Beep!
 
 /datum/emote/living/carbon/human/robot_tongue/can_run_emote(mob/user, status_check = TRUE , intentional)

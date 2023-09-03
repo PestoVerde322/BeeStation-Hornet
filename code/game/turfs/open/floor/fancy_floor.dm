@@ -281,6 +281,16 @@
 		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 			QUEUE_SMOOTH_NEIGHBORS(src)
 
+/turf/open/floor/carpet/Entered(mob/living/carbon/human/M)
+	. = ..()
+	if(.)
+		return
+	if(iscatperson(M))
+		if(prob(1)) //we're not so cruel if someone has the clever idea to carpet bomb the entire place, right?
+			to_chat(M, "<span class='warning'>You feel the urge to throw up walking here!</span>")
+			if(prob(2))
+				M.vomit(5)
+
 /turf/open/floor/carpet/black
 	icon = 'icons/turf/floors/carpet_black.dmi'
 	icon_state = "carpet_black-255"
