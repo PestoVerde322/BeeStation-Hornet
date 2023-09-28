@@ -35,7 +35,7 @@
 		for(var/obj/effect/O in A)
 			if(is_cleanable(O))
 				qdel(O)
-	reagents.expose(A, TOUCH, 10)	//Needed for proper floor wetting.
+	reagents.reaction(A, TOUCH, 10)	//Needed for proper floor wetting.
 	reagents.remove_any(1)			//reaction() doesn't use up the reagents
 
 
@@ -77,7 +77,7 @@
 	name = "advanced mop"
 	mopcap = 10
 	icon_state = "advmop"
-	item_state = "mop"
+	item_state = "advmop"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	force = 12
