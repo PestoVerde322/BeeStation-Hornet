@@ -25,6 +25,7 @@
 #define SPECIES_SNAILPERSON "snail"
 #define SPECIES_SUPERSOLDIER "supersoldier"
 #define SPECIES_VAMPIRE "vampire"
+#define SPECIES_TWISTED "twisted_man"
 
 //Defines for Golem Species IDs
 #define SPECIES_GOLEM_ADAMANTINE "adamantine_golem"
