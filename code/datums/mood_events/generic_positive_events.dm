@@ -164,7 +164,7 @@
 	timeout = 3 MINUTES
 
 /datum/mood_event/twisted_good
-	description ="<span class='nicegreen'>we rejoice in the Unshapen's grace!</span>\n"
+	description ="<span class='nicegreen'>we rejoice in the Unshaped's grace!</span>\n"
 	mood_change = 5
 
 /datum/mood_event/artok

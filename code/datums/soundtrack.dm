@@ -39,5 +39,4 @@ GLOBAL_LIST_EMPTY(soundtrack_this_round) // A running list of soundtrack songs t
 	file = 'sound/soundtrack/mind_crawler.ogg'
 	length = (2 MINUTES) + (50 SECONDS)
 	station_only = TRUE
-
 // Look at this file
