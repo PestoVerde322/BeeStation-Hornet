@@ -6,7 +6,7 @@
 	if(!check_rights(R_PERMISSIONS))
 		return
 	log_admin("[key_name(usr)] Started generating Archimundi.")
-	SSzclear.wipe_z_level(2, TRUE)
+	SSzclear.wipe_z_level(2)
 	LoadArchimundi()
 	log_admin("[key_name(usr)] Generated Archimundi.")
 
