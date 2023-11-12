@@ -36,6 +36,7 @@
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
 
+	dmg_overlay_type = "robotic"
 /obj/item/bodypart/r_arm/robot
 	name = "cyborg right arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -61,6 +62,8 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+	dmg_overlay_type = "robotic"
 
 /obj/item/bodypart/l_leg/robot
 	name = "cyborg left leg"
@@ -88,6 +91,8 @@
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
 
+	dmg_overlay_type = "robotic"
+
 /obj/item/bodypart/r_leg/robot
 	name = "cyborg right leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
@@ -113,6 +118,8 @@
 	light_burn_msg = ROBOTIC_LIGHT_BURN_MSG
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
+
+	dmg_overlay_type = "robotic"
 
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
@@ -141,6 +148,9 @@
 
 	var/wired = FALSE
 	var/obj/item/stock_parts/cell/cell = null
+
+	dmg_overlay_type = "robotic"
+
 
 /obj/item/bodypart/chest/robot/get_cell()
 	return cell
@@ -249,6 +259,7 @@
 	var/obj/item/assembly/flash/handheld/flash1 = null
 	var/obj/item/assembly/flash/handheld/flash2 = null
 
+	dmg_overlay_type = "robotic"
 
 /obj/item/bodypart/head/robot/handle_atom_del(atom/A)
 	if(A == flash1)

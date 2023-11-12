@@ -243,7 +243,7 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		H.undershirt = "Nude"
 		H.socks = "Nude"
 		H.dna.features["mcolor"] = "511" //A deep red
-		H.regenerate_icons()
+		H.regenerate_icons(TRUE)
 	else //Did the devil get hit by a staff of transmutation?
 		owner.current.color = "#501010"
 	give_appropriate_spells()
