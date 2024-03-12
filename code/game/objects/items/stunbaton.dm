@@ -177,7 +177,7 @@
 		if(!deductcharge(hitcost))
 			return FALSE
 
-	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.get_combat_bodyzone(target)))
 	var/armor_block = target.run_armor_check(affecting, STAMINA)
 	// L.adjustStaminaLoss(stunforce)
 	target.apply_damage(stunforce, STAMINA, affecting, armor_block)
@@ -190,7 +190,7 @@
 		target.lastattackerckey = user.ckey
 		target.visible_message("<span class='danger'>[user] has electrocuted [target] with [src]!</span>", \
 								"<span class='userdanger'>[user] has electrocuted you with [src]!</span>")
-		log_combat(user, target, "stunned")
+		log_combat(user, target, "stunned", src)
 
 	playsound(src, 'sound/weapons/egloves.ogg', 50, TRUE, -1)
 
