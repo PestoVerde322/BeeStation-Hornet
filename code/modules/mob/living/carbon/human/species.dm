@@ -2387,6 +2387,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/get_scream_sound(mob/living/carbon/user)
 	return
 
+/datum/species/proc/get_nya_sound(mob/living/carbon/user)
+	return
+
 /datum/species/proc/get_cough_sound(mob/living/carbon/user)
 	return
 

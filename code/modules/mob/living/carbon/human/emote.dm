@@ -247,7 +247,12 @@
 	message = "lets out a nya"
 	emote_type = EMOTE_AUDIBLE
 	vary = TRUE
-	sound = 'sound/emotes/nyaa.ogg'
+
+/datum/emote/living/carbon/human/felinid/nya/get_sound(mob/living/user)
+	if(!iscatperson(user) || user.mind?.miming)
+		return
+	var/mob/living/carbon/H = user
+	return H.dna?.species?.get_nya_sound(H)
 
 // Robotic Tongue emotes. Beep!
 

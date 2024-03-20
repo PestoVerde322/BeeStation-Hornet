@@ -133,6 +133,13 @@
 				bp.dismember()
 				return
 
+/datum/species/human/felinid/get_nya_sound(mob/living/carbon/user)
+	return user.gender == FEMALE ? pick(
+		'sound/voice/felinid/nya_female.ogg',
+		) : pick(
+		'sound/voice/felinid/nya_female.ogg',
+		)
+
 
 /proc/mass_purrbation()
 	for(var/M in GLOB.mob_list)
