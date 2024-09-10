@@ -336,6 +336,15 @@
 			if(prob(2))
 				M.vomit(5)
 
+/turf/open/floor/carpet/lone
+	icon_state = "carpetsymbol"
+	smoothing_flags = NONE
+	floor_tile = /obj/item/stack/tile/carpet/symbol
+
+/turf/open/floor/carpet/lone/star
+	icon_state = "carpetstar"
+	floor_tile = /obj/item/stack/tile/carpet/star
+
 /turf/open/floor/carpet/black
 	icon = 'icons/turf/floors/carpet_black.dmi'
 	icon_state = "carpet_black-255"
@@ -434,16 +443,16 @@
 			A.narsie_act()
 
 /turf/open/floor/carpet/break_tile()
-    broken = TRUE
-    make_plating()
-    if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-        QUEUE_SMOOTH_NEIGHBORS(src)
+	broken = TRUE
+	make_plating()
+	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /turf/open/floor/carpet/burn_tile()
-    burnt = TRUE
-    make_plating()
-    if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-        QUEUE_SMOOTH_NEIGHBORS(src)
+	burnt = TRUE
+	make_plating()
+	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /turf/open/floor/carpet/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	return FALSE
@@ -457,6 +466,7 @@
 	canSmoothWith = list(SMOOTH_GROUP_TURF_CHASM)
 	icon = 'icons/turf/floors/Chasms.dmi'
 	icon_state = "chasms-0"
+	floor_tile = /obj/item/stack/tile/fakepit
 	tiled_dirt = FALSE
 	max_integrity = 100
 
