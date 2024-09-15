@@ -135,9 +135,9 @@
 
 /datum/species/human/felinid/get_nya_sound(mob/living/carbon/user)
 	return user.gender == FEMALE ? pick(
-		'sound/voice/felinid/nya_female.ogg',
+		'sound/voice/felinid/FemaleNyaa.ogg',
 		) : pick(
-		'sound/voice/felinid/nya_female.ogg',
+		'sound/voice/felinid/MaleNyaa.ogg',
 		)
 
 
