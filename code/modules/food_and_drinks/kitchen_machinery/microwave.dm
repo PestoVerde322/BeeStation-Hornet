@@ -4,7 +4,7 @@
 	name = "microwave oven"
 	desc = "Cooks and boils stuff."
 	icon = 'icons/obj/machines/microwave.dmi'
-	icon_state = "map_icon"
+	icon_state = "mw_full"
 	appearance_flags = KEEP_TOGETHER | LONG_GLIDE | PIXEL_SCALE
 	layer = BELOW_OBJ_LAYER
 	density = TRUE
@@ -142,7 +142,7 @@
 		border_icon_state = "mwo"
 	else if(operating)
 		door_icon_state = "door_on"
-		border_icon_state = "mw"
+		border_icon_state = "mw1"
 	else
 		door_icon_state = "door_off"
 		border_icon_state = "mw"
@@ -157,6 +157,9 @@
 
 	if (!open)
 		. += "door_handle"
+
+	if(!(machine_stat & NOPOWER))
+		. += emissive_appearance(icon, "emissive_[border_icon_state]", FLOAT_LAYER + 0.1, alpha = src.alpha)
 
 	return .
 
