@@ -12,7 +12,7 @@
 	var/operating = FALSE //Is it on?
 	var/dirty = FALSE // Does it need cleaning?
 	var/gibtime = 40 // Time from starting until meat appears
-	var/meat_produced = 0
+	var/meat_produced = 2
 	var/ignore_clothing = FALSE
 
 
@@ -22,7 +22,7 @@
 
 /obj/machinery/gibber/RefreshParts()
 	gibtime = 40
-	meat_produced = 0
+	meat_produced = initial(meat_produced)
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		meat_produced += B.rating
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
@@ -38,18 +38,23 @@
 			if(M.rating >= 2)
 				. += "<span class='notice'>Gibber has been upgraded to process inorganic materials.</span>"
 
-/obj/machinery/gibber/update_icon()
-	cut_overlays()
+/obj/machinery/gibber/update_overlays()
+	. = ..()
 	if (dirty)
 		add_overlay("grbloody")
 	if(machine_stat & (NOPOWER|BROKEN))
 		return
 	if (!occupant)
-		add_overlay("grjam")
-	else if (operating)
-		add_overlay("gruse")
-	else
-		add_overlay("gridle")
+		. += "grinder_empty"
+		. += emissive_appearance(icon, "grinder_empty", layer, alpha = src.alpha)
+		return
+	if(operating)
+		. += "grinder_active"
+		. += emissive_appearance(icon, "grinder_active", layer, alpha = src.alpha)
+		. += "grinder_jaws_active"
+		return
+	. += "grinder_loaded"
+	. += emissive_appearance(icon, "grinder_loaded", layer, alpha = src.alpha)
 
 /obj/machinery/gibber/attack_paw(mob/user)
 	return attack_hand(user)
@@ -77,7 +82,7 @@
 	if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
 		var/mob/living/L = user.pulling
 		if(!iscarbon(L))
-			to_chat(user, "<span class='danger'>This item is not suitable for the gibber!</span>")
+			to_chat(user, "<span class='danger'>This item is not suitable for [src]!</span>")
 			return
 		var/mob/living/carbon/C = L
 		if(C.buckled ||C.has_buckled_mobs())
@@ -90,13 +95,13 @@
 					to_chat(user, "<span class='danger'>Subject may not have abiotic items on.</span>")
 					return
 
-		user.visible_message("<span class='danger'>[user] starts to put [C] into the gibber!</span>")
+		user.visible_message("<span class='danger'>[user] starts to put [C] into [src]!</span>")
 
 		add_fingerprint(user)
 
 		if(do_after(user, gibtime, target = src))
 			if(C && user.pulling == C && !C.buckled && !C.has_buckled_mobs() && !occupant)
-				user.visible_message("<span class='danger'>[user] stuffs [C] into the gibber!</span>")
+				user.visible_message("<span class='danger'>[user] stuffs [C] into [src]!</span>")
 				C.forceMove(src)
 				set_occupant(C)
 				update_icon()
@@ -118,13 +123,10 @@
 	else
 		return ..()
 
-
-
 /obj/machinery/gibber/verb/eject()
 	set category = "Object"
 	set name = "empty gibber"
 	set src in oview(1)
-
 	if(usr.incapacitated())
 		return
 	src.go_out()
@@ -147,8 +149,7 @@
 	operating = TRUE
 	update_icon()
 
-	var/offset = prob(50) ? -2 : 2
-	animate(src, pixel_x = pixel_x + offset, time = 0.2, loop = 200) //start shaking
+	Shake(pixelshiftx = 1, pixelshifty = 0, duration = gibtime)
 	var/mob/living/mob_occupant = occupant
 	var/sourcename = mob_occupant.real_name
 	var/sourcejob
