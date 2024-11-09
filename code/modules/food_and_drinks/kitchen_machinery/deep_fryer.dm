@@ -1,8 +1,3 @@
-/*
-April 3rd, 2014 marks the day this machine changed the face of the kitchen on NTStation13
-God bless America.
-*/
-
 /// The deep fryer pings after this long, letting people know it's "perfect"
 #define DEEPFRYER_COOKTIME 50
 /// The deep fryer pings after this long, reminding people that there's a very burnt object inside
@@ -10,6 +5,7 @@ God bless America.
 
 /// Global typecache of things which should never be fried.
 GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
+	/obj/item/bodybag/bluespace,
 	/obj/item/reagent_containers/cup,
 	/obj/item/reagent_containers/syringe,
 	/obj/item/reagent_containers/condiment,
@@ -19,7 +15,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 
 /obj/machinery/deepfryer
 	name = "deep fryer"
-	desc = "Deep fried <i>everything</i>."
+	desc = "A single basked deep fryer that will allow you to deep fry <i>everything</i>."
 	icon = 'icons/obj/machines/kitchenmachines.dmi'
 	icon_state = "fryer_off"
 	density = TRUE
@@ -179,7 +175,9 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	frying_burnt = FALSE
 	fry_loop.stop()
 	cook_time = 0
+	flick("fryer_stop", src)
 	icon_state = "fryer_off"
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/deepfryer/proc/start_fry(obj/item/frying_item, mob/user)
 	to_chat(user, "<span class='notice'>You put [frying_item] into [src].</span>")
@@ -191,6 +189,7 @@ GLOBAL_LIST_INIT(oilfry_blacklisted_items, typecacheof(list(
 	//ADD_TRAIT(frying, TRAIT_FOOD_CHEF_MADE, REF(user)) //Attaching behavior to if the food is made by a chef, later newfood
 	SEND_SIGNAL(frying, COMSIG_ITEM_ENTERED_FRYER)
 
+	flick("fryer_start", src)
 	icon_state = "fryer_on"
 	fry_loop.start()
 
