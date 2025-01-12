@@ -3065,6 +3065,7 @@
 /obj/effect/turf_decal/plaque{
 	icon_state = "L9"
 	},
+/obj/machinery/photobooth,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "aLm" = (
@@ -16059,14 +16060,11 @@
 	id = "hop";
 	name = "Privacy Shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable/yellow{
-	icon_state = "1-4"
-	},
 /obj/structure/cable/yellow{
 	icon_state = "1-8"
 	},
 /obj/structure/cable/yellow,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/crew_quarters/heads/hop)
 "ekA" = (
@@ -19837,6 +19835,7 @@
 /obj/effect/turf_decal/plaque{
 	icon_state = "L5"
 	},
+/obj/structure/weightmachine,
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "fge" = (
@@ -27069,13 +27068,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/engine/atmos)
-"gRO" = (
-/obj/structure/bed/dogbed/ian,
-/obj/effect/turf_decal/siding/wood/corner{
-	dir = 1
-	},
-/turf/open/floor/wood,
-/area/crew_quarters/heads/hop)
 "gRT" = (
 /obj/structure/closet/crate/freezer,
 /obj/effect/spawner/lootdrop/maintenance/three,
@@ -27127,15 +27119,9 @@
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "gSE" = (
-/obj/structure/table/wood,
-/obj/item/clipboard,
-/obj/item/toy/figure/hop{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/toy/figure/ian,
-/turf/open/floor/wood,
-/area/crew_quarters/heads/hop)
+/obj/machinery/photobooth,
+/turf/open/floor/iron/dark,
+/area/hallway/primary/starboard)
 "gSQ" = (
 /obj/structure/cable/yellow{
 	icon_state = "1-2"
@@ -28481,6 +28467,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
+/obj/structure/bed/dogbed/ian,
 /turf/open/floor/wood,
 /area/crew_quarters/heads/hop)
 "hlH" = (
@@ -28751,9 +28738,6 @@
 /turf/closed/wall,
 /area/vacant_room/commissary/commissary1)
 "hpZ" = (
-/obj/machinery/light{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot,
 /obj/machinery/flasher{
 	id = "hopflash";
@@ -28765,8 +28749,8 @@
 /obj/effect/turf_decal/trimline/dark_blue/corner{
 	dir = 8
 	},
-/obj/structure/sign/poster/official/work_for_a_future{
-	pixel_y = 32
+/obj/machinery/light{
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/hallway/primary/starboard)
@@ -32723,7 +32707,13 @@
 /turf/closed/wall/rust,
 /area/asteroid/nearstation/bomb_site)
 "irF" = (
-/obj/item/kirbyplants/random,
+/obj/structure/table/wood,
+/obj/item/clipboard,
+/obj/item/toy/figure/hop{
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/item/toy/figure/ian,
 /obj/machinery/light_switch{
 	pixel_x = 24
 	},
@@ -34885,6 +34875,17 @@
 /obj/structure/sign/warning/docking,
 /turf/closed/wall/r_wall,
 /area/maintenance/department/science)
+"iRv" = (
+/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/trimline/dark_blue/line,
+/obj/effect/turf_decal/trimline/dark_blue/line{
+	dir = 1
+	},
+/obj/structure/sign/poster/official/work_for_a_future{
+	pixel_y = 32
+	},
+/turf/open/floor/iron/dark,
+/area/hallway/primary/starboard)
 "iRW" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark/side,
@@ -36505,16 +36506,22 @@
 /turf/closed/wall,
 /area/maintenance/starboard/fore)
 "jpc" = (
-/obj/machinery/door/poddoor/shutters/preopen{
-	id = "hop";
-	name = "Privacy Shutters"
+/obj/effect/turf_decal/guideline/guideline_in/red{
+	dir = 1
 	},
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable/yellow{
-	icon_state = "0-8"
+/obj/effect/turf_decal/guideline/guideline_mid/darkblue{
+	dir = 1
 	},
-/turf/open/floor/plating,
-/area/crew_quarters/heads/hop)
+/obj/effect/turf_decal/guideline/guideline_out/yellow,
+/obj/effect/turf_decal/guideline/guideline_mid/purple,
+/obj/effect/turf_decal/guideline/guideline_out/blue{
+	dir = 1
+	},
+/obj/machinery/airalarm/directional/south{
+	pixel_y = -22
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/starboard)
 "jpj" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/window{
@@ -46991,23 +46998,6 @@
 	},
 /obj/effect/turf_decal/guideline/guideline_out_alt/blue{
 	dir = 4
-	},
-/turf/open/floor/iron,
-/area/hallway/primary/starboard)
-"lRz" = (
-/obj/machinery/airalarm/directional/south{
-	pixel_y = -22
-	},
-/obj/effect/turf_decal/guideline/guideline_in/red{
-	dir = 1
-	},
-/obj/effect/turf_decal/guideline/guideline_mid/darkblue{
-	dir = 1
-	},
-/obj/effect/turf_decal/guideline/guideline_out/yellow,
-/obj/effect/turf_decal/guideline/guideline_mid/purple,
-/obj/effect/turf_decal/guideline/guideline_out/blue{
-	dir = 1
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
@@ -138077,7 +138067,7 @@ kdg
 tht
 mqi
 dKc
-rPa
+jpc
 rPR
 iFa
 nlF
@@ -138585,9 +138575,9 @@ fWB
 hIC
 jaf
 hlD
-gRO
-jpc
-kdg
+wFC
+wFC
+iRv
 oyC
 lit
 xmO
@@ -138842,8 +138832,8 @@ gYS
 hJw
 gtA
 irF
-gSE
 wFC
+gSE
 hpZ
 kBC
 ljq
@@ -139100,12 +139090,12 @@ qJE
 gsc
 qJE
 wFC
-wFC
+kia
 oyC
 oyC
 leg
 dKc
-lRz
+rPa
 rPR
 mQU
 nlT

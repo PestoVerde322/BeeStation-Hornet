@@ -10,11 +10,12 @@
 	icon = 'icons/obj/machines/photobooth.dmi'
 	icon_state = "booth_open"
 	base_icon_state = "booth"
+	var/static/mutable_appearance/top_layer
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/photobooth
-	light_range = 6
-	light_color = COLOR_WHITE
-	light_power = FLASH_LIGHT_POWER
+	light_range = MINIMUM_USEFUL_LIGHT_RANGE
+	light_color = COLOR_OFF_WHITE
+	light_power = 1
 	light_on = FALSE
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND
 	req_one_access = list(ACCESS_LAWYER, ACCESS_SECURITY)
@@ -23,20 +24,12 @@
 	///Boolean on whether the machine is currently busy taking someone's pictures, so you can't start taking pictures while it's working.
 	var/taking_pictures = FALSE
 
-/**
- * Security photobooth
- * Adds a height chart in the background, used for people you want to evidently stick out as prisoners.
- * Good for people you plan on putting in the permabrig.
- */
-/obj/machinery/photobooth/security
-	name = "security photobooth"
-	desc = "A machine with some drapes and a camera, used to update security record photos. Requires Security access to use, and adds a height chart to the person."
-	circuit = /obj/item/circuitboard/machine/photobooth/security
-	req_one_access = list(ACCESS_SECURITY)
-	add_height_chart = TRUE
+	///Name of lighting mask for the vending machine
+	var/light_mask
 
 /obj/machinery/photobooth/Initialize(mapload)
 	. = ..()
+	top_layer = top_layer || mutable_appearance(icon, layer = ABOVE_MOB_LAYER)
 
 /obj/machinery/photobooth/interact(mob/living/user, list/modifiers)
 	. = ..()
@@ -77,13 +70,28 @@
 		icon_state = "[base_icon_state]_off"
 	else if(state_open)
 		icon_state = "[base_icon_state]_open"
+		light_mask = "[base_icon_state]_open_light-mask"
 	else
 		icon_state = "[base_icon_state]_closed"
+		light_mask = "[base_icon_state]_closed_light-mask"
 
 /obj/machinery/photobooth/update_overlays()
 	. = ..()
+	cut_overlays()
+	add_overlay(top_layer)
+	top_layer.icon_state = "booth_top"
+	if(light_mask && !(machine_stat & BROKEN) && powered())
+		. += emissive_appearance(icon, light_mask, layer)
+		ADD_LUM_SOURCE(src, LUM_SOURCE_MANAGED_OVERLAY)
 	if((machine_stat & MAINT) || panel_open)
 		. += "[base_icon_state]_panel"
+
+/obj/machinery/photobooth/update_appearance(updates=ALL)
+	. = ..()
+	if(machine_stat & BROKEN)
+		set_light(0)
+		return
+	set_light(powered() ? MINIMUM_USEFUL_LIGHT_RANGE : 0)
 
 /obj/machinery/photobooth/screwdriver_act(mob/living/user, obj/item/tool)
 	if(!has_buckled_mobs() && default_deconstruction_screwdriver(user, icon_state, icon_state, tool))
@@ -107,6 +115,29 @@
 	return TRUE
 
 /**
+ * Entering & buckling on the photomachine
+ */
+
+///The weight action we give to people that buckle themselves to us.
+	var/datum/action/push_weights/weight_action
+
+/obj/machinery/photobooth/buckle_mob(mob/living/buckled, force, check_loc, needs_anchored = TRUE)
+	. = ..()
+
+/obj/machinery/photobooth/post_buckle_mob(mob/living/buckled)
+	weight_action.Grant(buckled)
+	buckled.add_overlay(overlay)
+	src.cut_overlay(overlay)
+
+/obj/machinery/photobooth/unbuckle_mob(mob/living/buckled_mob, force, can_fall)
+	. = ..()
+	src.add_overlay(overlay)
+	buckled_mob.cut_overlay(overlay)
+	weight_action.Remove(buckled_mob)
+
+
+
+/**
  * Handles the effects of taking pictures of the user, calling finish_taking_pictures
  * to actually update the records.
  */
@@ -127,12 +158,12 @@
 		taking_pictures = FALSE
 		return
 	playsound(src, 'sound/items/polaroid1.ogg', 75, TRUE)
-	flash()
+	//flash()
 	if(!do_after(occupant, 3 SECONDS, src, timed_action_flags = IGNORE_HELD_ITEM))
 		taking_pictures = FALSE
 		return
 	playsound(src, 'sound/items/polaroid2.ogg', 75, TRUE)
-	flash()
+	//flash()
 	if(!do_after(occupant, 2 SECONDS, src, timed_action_flags = IGNORE_HELD_ITEM))
 		taking_pictures = FALSE
 		return
@@ -147,6 +178,7 @@
 	balloon_alert(occupant, "records updated")
 	open_machine()
 
+/*
 ///Mimicing the camera, gives a flash effect by turning the light on and calling flash_end.
 /obj/machinery/photobooth/proc/flash()
 	set_light_on(TRUE)
@@ -155,3 +187,16 @@
 ///Called by a timer to turn the light off to end the flash effect.
 /obj/machinery/photobooth/proc/flash_end()
 	set_light_on(FALSE)
+*/
+
+/**
+ * Security photobooth
+ * Adds a height chart in the background, used for people you want to evidently stick out as prisoners.
+ * Good for people you plan on putting in the permabrig.
+ */
+/obj/machinery/photobooth/security
+	name = "security photobooth"
+	desc = "A machine with some drapes and a camera, used to update security record photos. Requires Security access to use, and adds a height chart to the person."
+	circuit = /obj/item/circuitboard/machine/photobooth/security
+	req_one_access = list(ACCESS_SECURITY)
+	add_height_chart = TRUE
