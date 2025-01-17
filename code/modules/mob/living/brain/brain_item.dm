@@ -2,6 +2,7 @@
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
 	icon_state = "brain"
+	visual = TRUE
 	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
@@ -27,6 +28,7 @@
 	var/damage_delta = 0
 
 	var/list/datum/brain_trauma/traumas = list()
+	juice_results = null	//the moment the brains become juicable, people will find a way to cheese round removal. So NO.
 
 	investigate_flags = ADMIN_INVESTIGATE_TARGET
 

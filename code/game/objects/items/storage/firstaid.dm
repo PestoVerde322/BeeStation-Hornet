@@ -71,7 +71,7 @@
 	STR.max_w_class = WEIGHT_CLASS_BULKY //holds the same equipment as a medibelt
 	STR.max_items = 12
 	STR.max_combined_w_class = 24
-	STR.can_hold = typecacheof(list(
+	STR.set_holdable(list(
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
@@ -151,7 +151,7 @@
 	STR.max_w_class = WEIGHT_CLASS_BULKY //holds the same equipment as a medibelt
 	STR.max_items = 13
 	STR.max_combined_w_class = 24
-	STR.can_hold = typecacheof(list(
+	STR.set_holdable(list(
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
@@ -205,6 +205,21 @@
 		/obj/item/reagent_containers/hypospray/medipen = 2,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 1
 		)
+	generate_items_inside(items_inside,src)
+
+/obj/item/storage/firstaid/medical/physician
+	name = "brig physicians bag"
+	desc = "A specialized doctors bag, specifically meant for healing security when they get beaten to death by a unarmed prisoner."
+
+/obj/item/storage/firstaid/medical/physician/PopulateContents()
+	var/static/items_inside = list(
+		/obj/item/stack/medical/gauze = 2,
+		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/ointment = 2,
+		/obj/item/reagent_containers/hypospray/medipen/ = 2,
+		/obj/item/storage/pill_bottle/kelotane = 1,
+		/obj/item/storage/pill_bottle/bicaridine = 1,
+		/obj/item/healthanalyzer = 1,)
 	generate_items_inside(items_inside,src)
 
 //First Aid kit (ancient)
@@ -443,7 +458,7 @@
 	STR.max_combined_w_class = 56 //any combination of allowed items
 
 	//Surgical tools, medkit supplies, compact defibrillator and a few odds and ends but not as much as medbelt
-	var/static/list/can_hold = typecacheof(list(
+	STR.set_holdable(list(
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
@@ -474,7 +489,6 @@
 		/obj/item/pinpointer/crew,
 		/obj/item/defibrillator/compact
 		))
-	STR.can_hold = can_hold
 
 
 /obj/item/storage/firstaid/tactical/PopulateContents()
@@ -561,7 +575,7 @@
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.allow_quick_gather = TRUE
 	STR.click_gather = TRUE
-	STR.can_hold = typecacheof(list(/obj/item/reagent_containers/pill, /obj/item/dice))
+	STR.set_holdable(list(/obj/item/reagent_containers/pill, /obj/item/dice))
 
 /obj/item/storage/pill_bottle/suicide_act(mob/living/user)
 	user.visible_message("<span class='suicide'>[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
