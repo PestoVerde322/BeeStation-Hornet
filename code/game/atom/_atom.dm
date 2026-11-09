@@ -66,6 +66,10 @@
 	var/light_height = LIGHTING_HEIGHT
 	///Bitflags to determine lighting-related atom properties.
 	var/light_flags = NONE
+	///Normal system, should not be applied to ANYTHING.
+	var/normal_on = FALSE
+	///Icon for the normal, for now it's in the same file
+	var/normal_icon_state
 
 	var/flags_ricochet = NONE
 	///When a projectile tries to ricochet off this atom, the projectile ricochet chance is multiplied by this
