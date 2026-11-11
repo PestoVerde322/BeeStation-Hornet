@@ -18,25 +18,28 @@
 	anchored = FALSE
 
 /obj/structure/window/fulltile/plasma
+	name = "plasma window"
+	desc = "A window made out of a plasma-silicate alloy. It looks insanely tough to break and burn through. this one has a padding that is flush to the wall."
 	icon = 'icons/obj/smooth_structures/windows/plasma_window.dmi'
 	icon_state = "plasma_window-0"
 	base_icon_state = "plasma_window"
 	max_integrity = 600
+	plasma_made = TRUE
 	armor_type = /datum/armor/plasma_window
-	glass_amount = 2
 
 /obj/structure/window/fulltile/plasma/unanchored
 	anchored = FALSE
 
 //to be converted to ordinary instead of reinforced
 /obj/structure/window/fulltile/depleteduranium
-	icon = 'icons/obj/smooth_structures/windows/reinforced_DU_window.dmi'
-	icon_state = "reinforced_DU_window-0"
-	base_icon_state = "reinforced_DU_window"
+	name = "depleted uranium window"
+	desc = "A window made out of depleted uranium. It looks perfect for radiation shielding!"
+	icon = 'icons/obj/smooth_structures/windows/reinforced_du_window.dmi'
+	icon_state = "reinforced_du_window-0"
+	base_icon_state = "reinforced_du_window"
 	glass_type = /obj/item/stack/sheet/glass //TODO implement DU glass!
 	max_integrity = 500
 	rad_insulation = RAD_FULL_INSULATION
-	glass_amount = 2
 
 /obj/structure/window/fulltile/depleteduranium/unanchored
 	anchored = FALSE
@@ -56,8 +59,6 @@
 	canSmoothWith = list(SMOOTH_GROUP_PAPERFRAME)
 	opacity = TRUE
 	max_integrity = 25
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
 	glass_type = /obj/item/stack/sheet/paperframes
 	heat_resistance = 233
 	decon_speed = 10
@@ -125,14 +126,13 @@
 	update_appearance()
 
 /obj/structure/window/fulltile/bronze
+	name = "brass window"
 	icon = 'icons/obj/smooth_structures/windows/clockwork_window.dmi'
 	icon_state = "clockwork_window-0"
 	base_icon_state = "clockwork_window"
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WINDOW_FULLTILE_BRONZE)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	obj_flags = CAN_BE_HIT
 	max_integrity = 50
-	glass_amount = 2
 
 /obj/structure/window/fulltile/bronze/unanchored
 	anchored = FALSE
@@ -142,45 +142,45 @@
 /// Reinforced fulltile window
 
 /obj/structure/window/fulltile/reinforced
+	name = "reinforced window"
+	desc = "A window that is reinforced with iron rod matrix."
 	icon = 'icons/obj/smooth_structures/windows/reinforced_window.dmi'
 	icon_state = "reinforced_window-0"
 	base_icon_state = "reinforced_window"
 	max_integrity = 200
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
+	reinf = TRUE
 
 /obj/structure/window/fulltile/reinforced/unanchored
 	anchored = FALSE
 
 /obj/structure/window/fulltile/reinforced/tinted
-	icon = 'icons/obj/smooth_structures/windows/tinted_window.dmi'
-	icon_state = "tinted_window-0"
-	base_icon_state = "tinted_window"
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
+	icon = 'icons/obj/smooth_structures/windows/reinforced_tinted_window.dmi'
+	icon_state = "reinforced_tinted_window-0"
+	base_icon_state = "reinforced_tinted_window"
 
 /obj/structure/window/fulltile/reinforced/tinted/nightclub
 	color = "#9b1d70"
 
 /obj/structure/window/fulltile/reinforced/plasma
+	name = "reinforced plasma window"
+	desc = "A window made out of a plasma-silicate alloy and an iron rod matrix. It looks hopelessly tough to break and is most likely nigh fireproof."
 	icon = 'icons/obj/smooth_structures/windows/reinforced_plasma_window.dmi'
 	icon_state = "reinforced_plasma_window-0"
 	base_icon_state = "reinforced_plasma_window"
+	plasma_made = TRUE
 	max_integrity = 1200 //4000 max integrity is ridicolous, you get TWICE the normal variant, take it or leave it
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
 
 /obj/structure/window/fulltile/reinforced/plasma/unanchored
 	anchored = FALSE
 
-/obj/structure/window/fulltile/reinforced/ice
+/obj/structure/window/fulltile/reinforced/ice //Currently unused maybe remove?
+	name = "frosted reinforced window"
 	icon = 'icons/obj/smooth_structures/windows/rice_window.dmi'
 	icon_state = "rice_window-0"
 	base_icon_state = "rice_window"
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 150
-	glass_amount = 2
 
 /obj/structure/window/fulltile/reinforced/shuttle
 	name = "shuttle window"
@@ -191,13 +191,10 @@
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 500
-	obj_flags = CAN_BE_HIT
-	reinf = TRUE
 	heat_resistance = 1600
-	armor_type = /datum/armor/window_shuttle
+	armor_type = /datum/armor/window_titanium
 	explosion_block = 3
 	glass_type = /obj/item/stack/sheet/titaniumglass
-	glass_amount = 2
 	ricochet_chance_mod = 0.9
 
 /obj/structure/window/fulltile/reinforced/shuttle/unanchored
@@ -222,14 +219,11 @@
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 200
 	obj_flags = CAN_BE_HIT
-	reinf = TRUE
 	heat_resistance = 1600
+	plasma_made = FALSE //IT'S NOT MADE OF PLASMA!
 	armor_type = /datum/armor/window_plastitanium
 	explosion_block = 3
 	glass_type = /obj/item/stack/sheet/plastitaniumglass
-	glass_amount = 2
-
-
 
 /obj/structure/window/fulltile/reinforced/plasma/plastitanium/unanchored
 	anchored = FALSE

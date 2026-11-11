@@ -1,6 +1,7 @@
 /obj/structure/window
 	name = "window"
 	desc = "A window."
+	icon = 'icons/obj/structures/windows.dmi'
 	icon_state = "window"
 	density = TRUE
 	layer = ABOVE_OBJ_LAYER //Just above doors
@@ -8,29 +9,46 @@
 	anchored = TRUE //initially is 0 for tile smoothing
 	flags_1 = ON_BORDER_1
 	obj_flags = CAN_BE_HIT | BLOCKS_CONSTRUCTION_DIR | IGNORE_DENSITY
+
 	max_integrity = 50
 	can_be_unanchored = TRUE
 	resistance_flags = ACID_PROOF
 	armor_type = /datum/armor/glass_window
+
 	can_atmos_pass = ATMOS_PASS_PROC
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 	pass_flags_self = PASSTRANSPARENT
 	z_flags = Z_BLOCK_IN_DOWN | Z_BLOCK_IN_UP
+
+	/// Window construction states, by default it's out of frame
 	var/state = WINDOW_OUT_OF_FRAME
+	/// Is it reinforced with rebars?
 	var/reinf = FALSE
+	/// is it made of plasma?
+	var/plasma_made = FALSE
+	/// Heat resistance before it fails (glass melting point is 1400 to 1600 c, or 1673 to 1873 k, but breaks earlier due to thermal stress)
 	var/heat_resistance = 800
+	/// Deconstruction speed... self explainatory
 	var/decon_speed = 30
- 	var/fulltile = FALSE
+	/// Is it fulltile or a pane?
+	var/fulltile = FALSE
+	/// Type of debris when it's broken
 	var/glass_type = /obj/item/stack/sheet/glass
+	/// How much material is yielded when deconstructed?
 	var/glass_amount = 1
+	/// Overlay for damaged states, only apply to fulltiles *currently*
 	var/mutable_appearance/crack_overlay
-	var/real_explosion_block	//ignore this, just use explosion_block
+	/// Ignore this, just use explosion_block
+	var/real_explosion_block
+	/// Various sounds effect
 	var/breaksound = "shatter"
 	var/knocksound = 'sound/effects/glassknock.ogg'
 	var/bashsound = 'sound/effects/glassbash.ogg'
 	var/hitsound = 'sound/effects/glasshit.ogg'
+
 	flags_ricochet = RICOCHET_HARD
 	ricochet_chance_mod = 0.4
+
 	/// If we added a leaning component to ourselves
 	var/added_leaning = FALSE
 
@@ -47,7 +65,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
+	if(fulltile)
+		. += span_notice("That's an unusually <b>big</b> window... Maybe it has an hollow padding?")
 	if(reinf)
+		. += span_notice("This window is reinforced with rebars.")
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
 			. += span_notice("The window is <b>screwed</b> to the frame.")
 		else if(anchored && state == WINDOW_IN_FRAME)
@@ -135,40 +156,29 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	. = ..()
 	if(.)
 		return
-
 	if(!density)
 		return TRUE
-
 	if(fulltile)
 		return FALSE
-
 	if(border_dir == dir)
 		return FALSE
-
 	if(istype(mover, /obj/structure/window))
 		var/obj/structure/window/moved_window = mover
 		return valid_build_direction(loc, moved_window.dir, is_fulltile = moved_window.fulltile)
-
 	if(istype(mover, /obj/structure/windoor_assembly) || istype(mover, /obj/machinery/door/window))
 		return valid_build_direction(loc, mover.dir, is_fulltile = FALSE)
-
 	return TRUE
 
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
-
 	if(leaving.movement_type & PHASING)
 		return
-
 	if(leaving == src)
 		return // Let's not block ourselves.
-
 	if (leaving.pass_flags & PASSTRANSPARENT)
 		return
-
 	if (fulltile)
 		return
-
 	if(direction == dir && density)
 		leaving.Bump(src)
 		return COMPONENT_ATOM_BLOCK_EXIT
@@ -192,7 +202,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(!can_be_reached(user))
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-
 	if(!user.combat_mode)
 		user.visible_message("<span class='notice'>[user] knocks on [src].</span>", \
 			"<span class='notice'>You knock on [src].</span>")
@@ -220,7 +229,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		if(atom_integrity < max_integrity)
 			if(!I.tool_start_check(user, amount = 0))
 				return
-
 			to_chat(user, span_notice("You begin repairing [src]..."))
 			if(I.use_tool(src, user, 40, volume = 50))
 				atom_integrity = max_integrity
@@ -328,12 +336,18 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 
 /obj/structure/window/proc/spawnDebris(location)
 	. = list()
-	. += new /obj/item/shard(location)
-	. += new /obj/effect/decal/cleanable/glass(location)
+	if (plasma_made)
+		. += new /obj/item/shard/plasma(location)
+		. += new /obj/effect/decal/cleanable/glass/plasma(location)
+		if (fulltile)
+			. += new /obj/item/shard/plasma(location)
+	else
+		. += new /obj/item/shard(location)
+		. += new /obj/effect/decal/cleanable/glass(location)
+		if (fulltile)
+			. += new /obj/item/shard(location)
 	if (reinf)
 		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
-	if (fulltile)
-		. += new /obj/item/shard(location)
 
 /obj/structure/window/proc/post_rotation(mob/user, degrees)
 	air_update_turf(TRUE, FALSE)
@@ -343,7 +357,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	update_nearby_icons()
 	. = ..()
 	local_turf.air_update_turf(TRUE, FALSE)
-
 
 /obj/structure/window/Move()
 	var/turf/T = loc
@@ -367,17 +380,15 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(!QDELETED(src))
 		if(!fulltile)
 			return
-
 		var/ratio = atom_integrity / max_integrity
 		ratio = ceil(ratio*4) * 25
-
 		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 			QUEUE_SMOOTH(src)
-
 		cut_overlay(crack_overlay)
 		if(ratio > 75)
 			return
-		crack_overlay = mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1))
+			/*_[rand(0,4)]*/
+		crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
 		add_overlay(crack_overlay)
 
 /obj/structure/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
@@ -394,7 +405,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		return TRUE
 	if(fulltile || (dir == to_dir))
 		return 0
-
 	return 1
 
 /obj/structure/window/GetExplosionBlock()
@@ -406,189 +416,3 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/spawner, 0)
 	anchored = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced
-	name = "reinforced window"
-	desc = "A window that is reinforced with iron rods."
-	icon_state = "rwindow"
-	reinf = TRUE
-	heat_resistance = 1600
-	armor_type = /datum/armor/glass_window_reinforced
-	max_integrity = 100
-	explosion_block = 1
-	glass_type = /obj/item/stack/sheet/rglass
-	rad_insulation = RAD_HEAVY_INSULATION
-	ricochet_chance_mod = 0.8
-
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/spawner, 0)
-
-/obj/structure/window/reinforced/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced/corner
-	icon_state = "rwindow_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/corner/spawner, 0)
-
-/obj/structure/window/reinforced/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/corner/unanchored/spawner, 0)
-
-/obj/structure/window/plasma
-	name = "plasma window"
-	desc = "A window made out of a plasma-silicate alloy. It looks insanely tough to break and burn through."
-	icon_state = "plasmawindow"
-	reinf = FALSE
-	heat_resistance = 25000
-	armor_type = /datum/armor/plasma_window
-	max_integrity = 300
-	glass_type = /obj/item/stack/sheet/plasmaglass
-	rad_insulation = RAD_NO_INSULATION
-
-/obj/structure/window/plasma/Initialize(mapload)
-	. = ..()
-	RemoveElement(/datum/element/atmos_sensitive)
-
-
-
-/obj/structure/window/plasma/spawnDebris(location)
-	. = list()
-	. += new /obj/item/shard/plasma(location)
-	. += new /obj/effect/decal/cleanable/glass/plasma(location)
-	if (reinf)
-		. += new /obj/item/stack/rods(location, (fulltile ? 2 : 1))
-	if (fulltile)
-		. += new /obj/item/shard/plasma(location)
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/spawner, 0)
-
-/obj/structure/window/plasma/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/unanchored/spawner, 0)
-
-/obj/structure/window/plasma/corner
-	icon_state = "plasmawindow_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/corner/spawner, 0)
-
-/obj/structure/window/plasma/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/corner/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced/plasma
-	name = "reinforced plasma window"
-	desc = "A window made out of a plasma-silicate alloy and a rod matrix. It looks hopelessly tough to break and is most likely nigh fireproof."
-	icon_state = "plasmarwindow"
-	reinf = TRUE
-	heat_resistance = 50000
-	armor_type = /datum/armor/plasma_window_reinforced
-	max_integrity = 500
-	explosion_block = 2
-	glass_type = /obj/item/stack/sheet/plasmarglass
-
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/spawner, 0)
-
-/obj/structure/window/reinforced/plasma/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced/plasma/corner
-	icon_state = "plasmarwindow_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/corner/spawner, 0)
-
-/obj/structure/window/reinforced/plasma/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/corner/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced/tinted
-	name = "tinted window"
-	icon_state = "twindow" //what what, hon hon
-	opacity = TRUE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/spawner, 0)
-
-/obj/structure/window/reinforced/tinted/corner
-	icon_state = "twindow_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/corner/spawner, 0)
-
-/obj/structure/window/reinforced/tinted/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/corner/unanchored/spawner, 0)
-
-/obj/structure/window/reinforced/tinted/frosted
-	name = "frosted window"
-	icon_state = "twindow"
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spawner, 0)
-
-/obj/structure/window/depleteduranium
-	name = "depleted uranium window"
-	desc = "A window made out of depleted uranium. It looks perfect for radiation shielding!"
-	icon_state = "duwindow"
-	reinf = TRUE
-	heat_resistance = 50000
-	armor_type = /datum/armor/depleted_uranium_window
-	max_integrity = 500
-	explosion_block = 2
-	glass_type = /obj/item/stack/sheet/mineral/uranium
-	rad_insulation = RAD_FULL_INSULATION
-
-
-
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/spawner, 0)
-
-/obj/structure/window/depleteduranium/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/unanchored/spawner, 0)
-
-/obj/structure/window/depleteduranium/corner
-	icon_state = "duwindow_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/spawner, 0)
-
-/obj/structure/window/depleteduranium/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/unanchored/spawner, 0)
-
-/obj/structure/window/bronze
-	name = "brass window"
-	desc = "A paper-thin pane of translucent yet reinforced brass. Nevermind, this is just weak bronze!"
-	icon = 'icons/obj/smooth_structures/windows/clockwork_window.dmi'
-	icon_state = "clockwork_window_single"
-	glass_type = /obj/item/stack/sheet/bronze
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/bronze/spawner, 0)
-
-/obj/structure/window/bronze/unanchored
-	anchored = FALSE
-
-/obj/structure/window/bronze/corner
-	icon_state = "clockwork_window_single_corner"
-	density = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/bronze/corner/spawner, 0)
-
-/obj/structure/window/bronze/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/bronze/corner/unanchored/spawner, 0)

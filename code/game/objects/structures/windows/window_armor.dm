@@ -36,7 +36,7 @@
 	fire = 100
 	acid = 100
 
-/datum/armor/window_shuttle
+/datum/armor/window_titanium
 	melee = 50
 	bomb = 50
 	fire = 80
@@ -44,6 +44,6 @@
 
 /datum/armor/window_plastitanium
 	melee = 60
-	bomb = 50
+	bomb = 75
 	fire = 80
 	acid = 100
