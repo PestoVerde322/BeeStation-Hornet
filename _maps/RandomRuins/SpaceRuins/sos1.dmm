@@ -26,7 +26,7 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/ruin/unpowered)
 "f" = (
-/obj/structure/window/reinforced/shuttle,
+/obj/structure/window/fulltile/reinforced/shuttle,
 /turf/open/floor/mineral/titanium/blue,
 /area/ruin/unpowered)
 "g" = (

@@ -245,15 +245,15 @@ WANTS_POWER_NODE(/obj/structure/grille)
 					return
 				var/obj/structure/window/WD
 				if(istype(W, /obj/item/stack/sheet/plasmarglass))
-					WD = new/obj/structure/window/reinforced/plasma/fulltile(drop_location()) //reinforced plasma window
+					WD = new/obj/structure/window/fulltile/reinforced/plasma(drop_location()) //reinforced plasma window
 				else if(istype(W, /obj/item/stack/sheet/plasmaglass))
-					WD = new/obj/structure/window/plasma/fulltile(drop_location()) //plasma window
+					WD = new/obj/structure/window/fulltile/plasma(drop_location()) //plasma window
 				else if(istype(W, /obj/item/stack/sheet/rglass))
-					WD = new/obj/structure/window/reinforced/fulltile(drop_location()) //reinforced window
+					WD = new/obj/structure/window/fulltile/reinforced(drop_location()) //reinforced window
 				else if(istype(W, /obj/item/stack/sheet/titaniumglass))
-					WD = new/obj/structure/window/reinforced/shuttle(drop_location())
+					WD = new/obj/structure/window/fulltile/reinforced/shuttle(drop_location())
 				else if(istype(W, /obj/item/stack/sheet/plastitaniumglass))
-					WD = new/obj/structure/window/reinforced/plasma/plastitanium(drop_location())
+					WD = new/obj/structure/window/fulltile/reinforced/plasma/plastitanium(drop_location())
 				else
 					WD = new/obj/structure/window/fulltile(drop_location()) //normal window
 				WD.setDir(dir_to_set)

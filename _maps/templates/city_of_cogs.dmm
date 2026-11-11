@@ -7,7 +7,7 @@
 /turf/open/floor/clockwork/reebe,
 /area/reebe/city_of_cogs)
 "c" = (
-/obj/structure/window/reinforced/clockwork/fulltile,
+/obj/structure/window/fulltile/reinforced/clockwork,
 /obj/structure/grille/ratvar,
 /turf/open/floor/clockwork/reebe,
 /area/reebe/city_of_cogs)
@@ -122,7 +122,7 @@
 /area/reebe/city_of_cogs)
 "J" = (
 /obj/structure/grille/ratvar,
-/obj/structure/window/reinforced/clockwork/fulltile,
+/obj/structure/window/fulltile/reinforced/clockwork,
 /turf/open/floor/clockwork/reebe,
 /area/reebe/city_of_cogs)
 "K" = (

@@ -15,7 +15,7 @@
 /turf/open/floor/plating/airless,
 /area/ruin/unpowered)
 "f" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/plating/airless,
 /area/ruin/unpowered)
 "g" = (

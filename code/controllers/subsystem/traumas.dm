@@ -320,7 +320,7 @@ SUBSYSTEM_DEF(traumas)
 			/obj/item/toy/katana,
 			/obj/item/nullrod/claymore/katana,
 			/obj/item/katana/weak/curator,
-			/obj/structure/window/paperframe,
+			/obj/structure/window/fulltile/paperframe,
 			/obj/structure/mineral_door/paperframe,
 		)),
 	)

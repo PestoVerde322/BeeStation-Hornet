@@ -854,7 +854,7 @@
 /obj/machinery/door/poddoor/preopen{
 	id = "hunters_windows"
 	},
-/obj/structure/window/reinforced/shuttle/survival_pod,
+/obj/structure/window/fulltile/reinforced/shuttle/survival_pod,
 /obj/structure/grille,
 /turf/open/floor/plating,
 /area/shuttle/hunter)
@@ -969,7 +969,7 @@
 /obj/machinery/door/poddoor/preopen{
 	id = "hunters_bridge"
 	},
-/obj/structure/window/reinforced/shuttle/survival_pod,
+/obj/structure/window/fulltile/reinforced/shuttle/survival_pod,
 /obj/structure/grille,
 /turf/open/floor/plating,
 /area/shuttle/hunter)

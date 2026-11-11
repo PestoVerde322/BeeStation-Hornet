@@ -96,12 +96,12 @@ again.
 /obj/effect/spawner/structure/window/reinforced
 	name = "reinforced window spawner"
 	icon_state = "rwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced)
 
 //Alarm grilles for prison wing
 /obj/effect/spawner/structure/window/reinforced/prison
 	name = "prison window spawner"
-	spawn_list = list(/obj/structure/grille/prison, /obj/structure/window/reinforced/fulltile)
+	spawn_list = list(/obj/structure/grille/prison, /obj/structure/window/fulltile/reinforced)
 
 /obj/effect/spawner/structure/window/hollow/reinforced
 	name = "hollow reinforced window spawner"
@@ -162,7 +162,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/tinted
 	name = "tinted reinforced window spawner"
 	icon_state = "twindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/tinted/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/tinted)
 
 //tinted nightclub
 
@@ -170,14 +170,14 @@ again.
 	name = "tinted nightclub reinforced window spawner"
 	icon_state = "twindow_spawner"
 	color ="#9b1d70"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/tinted/fulltile/nightclub)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/tinted/nightclub)
 
 //bronze
 
 /obj/effect/spawner/structure/window/bronze
 	name = "bronze window spawner"
 	icon_state = "bronzewindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/bronze/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/bronze)
 
 
 //shuttle window
@@ -185,7 +185,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/shuttle
 	name = "shuttle window spawner"
 	icon_state = "swindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/shuttle)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/shuttle)
 
 
 //plastitanium window
@@ -193,7 +193,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/plasma/plastitanium
 	name = "plastitanium window spawner"
 	icon_state = "plastitaniumwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma/plastitanium)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/plasma/plastitanium)
 
 
 //ice window
@@ -201,7 +201,7 @@ again.
 /obj/effect/spawner/structure/window/ice
 	name = "ice window spawner"
 	icon_state = "icewindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/fulltile/ice)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/ice)
 
 
 //survival pod window
@@ -209,7 +209,7 @@ again.
 /obj/effect/spawner/structure/window/survival_pod
 	name = "pod window spawner"
 	icon_state = "podwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/shuttle/survival_pod)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/shuttle/survival_pod)
 
 /obj/effect/spawner/structure/window/hollow/survival_pod
 	name = "hollow pod window spawner"
@@ -271,7 +271,7 @@ again.
 /obj/effect/spawner/structure/window/plasma
 	name = "plasma window spawner"
 	icon_state = "pwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/plasma)
 
 /obj/effect/spawner/structure/window/hollow/plasma
 	name = "hollow plasma window spawner"
@@ -332,7 +332,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/plasma
 	name = "reinforced plasma window spawner"
 	icon_state = "prwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/plasma/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/plasma)
 
 /obj/effect/spawner/structure/window/hollow/reinforced/plasma
 	name = "hollow reinforced plasma window spawner"
@@ -393,7 +393,7 @@ again.
 /obj/effect/spawner/structure/window/depleteduranium
 	name = "reinforced depleted uranium window spawner"
 	icon_state = "duwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/depleteduranium/fulltile)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/depleteduranium)
 
 /obj/effect/spawner/structure/window/hollow/depleteduranium
 	name = "hollow depleted uranium window spawner"

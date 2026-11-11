@@ -130,7 +130,7 @@
 //Pod objects
 
 //Window
-/obj/structure/window/reinforced/shuttle/survival_pod
+/obj/structure/window/fulltile/reinforced/shuttle/survival_pod
 	name = "pod window"
 	icon = 'icons/obj/smooth_structures/windows/pod_window.dmi'
 	icon_state = "pod_window-0"

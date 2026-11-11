@@ -186,7 +186,7 @@ GLOBAL_LIST_INIT(dreams, populate_dream_list())
 		/obj/machinery/firealarm,
 		/obj/machinery/airalarm,
 		/obj/structure/window/fulltile,
-		/obj/structure/window/reinforced/fulltile,
+		/obj/structure/window/fulltile/reinforced,
 	))
 	/// Cached list of allowed typecaches for each type in what_you_can_see
 	var/static/list/allowed_typecaches_by_root_type = null

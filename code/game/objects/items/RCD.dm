@@ -371,7 +371,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 		if(window_size == RCD_WINDOW_DIRECTIONAL)
 			window_type = /obj/structure/window/reinforced
 		else
-			window_type = /obj/structure/window/reinforced/fulltile
+			window_type = /obj/structure/window/fulltile/reinforced
 	else
 		if(window_size == RCD_WINDOW_DIRECTIONAL)
 			window_type = /obj/structure/window

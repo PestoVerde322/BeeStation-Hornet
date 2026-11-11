@@ -34,7 +34,7 @@
 "f" = (
 /obj/structure/grille,
 /obj/structure/cable/yellow,
-/obj/structure/window/reinforced/shuttle,
+/obj/structure/window/fulltile/reinforced/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/labor)
 "g" = (

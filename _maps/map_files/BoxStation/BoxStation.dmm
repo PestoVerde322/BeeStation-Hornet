@@ -25865,7 +25865,7 @@
 /turf/open/floor/iron/tech,
 /area/station/cargo/miningdock)
 "kSB" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /obj/structure/transit_tube/horizontal,
 /turf/open/floor/plating,
 /area/station/ai_monitored/turret_protected/aisat_interior)
@@ -51597,7 +51597,7 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "vnF" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /obj/structure/transit_tube,
 /turf/open/floor/plating,
 /area/station/engineering/main)

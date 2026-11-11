@@ -11,7 +11,7 @@
 	max_integrity = 50
 	can_be_unanchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor_type = /datum/armor/structure_window
+	armor_type = /datum/armor/glass_window
 	can_atmos_pass = ATMOS_PASS_PROC
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 	pass_flags_self = PASSTRANSPARENT
@@ -20,8 +20,7 @@
 	var/reinf = FALSE
 	var/heat_resistance = 800
 	var/decon_speed = 30
-	var/wtype = "glass"
-	var/fulltile = FALSE
+ 	var/fulltile = FALSE
 	var/glass_type = /obj/item/stack/sheet/glass
 	var/glass_amount = 1
 	var/mutable_appearance/crack_overlay
@@ -34,10 +33,6 @@
 	ricochet_chance_mod = 0.4
 	/// If we added a leaning component to ourselves
 	var/added_leaning = FALSE
-
-/datum/armor/structure_window
-	fire = 80
-	acid = 100
 
 /obj/structure/window/corner
 	icon_state = "window_corner"
@@ -126,7 +121,7 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(!fulltile)
 		new/obj/structure/window/reinforced/clockwork(get_turf(src), dir)
 	else
-		new/obj/structure/window/reinforced/clockwork/fulltile(get_turf(src))
+		new/obj/structure/window/fulltile/reinforced/clockwork(get_turf(src))
 	qdel(src)
 
 /obj/structure/window/singularity_pull(obj/anomaly/singularity/singularity, current_size)
@@ -418,18 +413,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
 	icon_state = "rwindow"
 	reinf = TRUE
 	heat_resistance = 1600
-	armor_type = /datum/armor/window_reinforced
+	armor_type = /datum/armor/glass_window_reinforced
 	max_integrity = 100
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/rglass
 	rad_insulation = RAD_HEAVY_INSULATION
 	ricochet_chance_mod = 0.8
 
-/datum/armor/window_reinforced
-	melee = 50
-	bomb = 25
-	fire = 80
-	acid = 100
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/spawner, 0)
 
@@ -455,7 +445,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/corner/unanchored/s
 	icon_state = "plasmawindow"
 	reinf = FALSE
 	heat_resistance = 25000
-	armor_type = /datum/armor/window_plasma
+	armor_type = /datum/armor/plasma_window
 	max_integrity = 300
 	glass_type = /obj/item/stack/sheet/plasmaglass
 	rad_insulation = RAD_NO_INSULATION
@@ -464,12 +454,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/corner/unanchored/s
 	. = ..()
 	RemoveElement(/datum/element/atmos_sensitive)
 
-/datum/armor/window_plasma
-	melee = 75
-	bullet = 5
-	bomb = 45
-	fire = 99
-	acid = 100
+
 
 /obj/structure/window/plasma/spawnDebris(location)
 	. = list()
@@ -504,17 +489,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/plasma/corner/unanchored/spawn
 	icon_state = "plasmarwindow"
 	reinf = TRUE
 	heat_resistance = 50000
-	armor_type = /datum/armor/reinforced_plasma
+	armor_type = /datum/armor/plasma_window_reinforced
 	max_integrity = 500
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
 
-/datum/armor/reinforced_plasma
-	melee = 85
-	bullet = 20
-	bomb = 60
-	fire = 99
-	acid = 100
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/plasma/spawner, 0)
 
@@ -564,18 +543,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/tinted/frosted/spaw
 	icon_state = "duwindow"
 	reinf = TRUE
 	heat_resistance = 50000
-	armor_type = /datum/armor/depleted_uranium
+	armor_type = /datum/armor/depleted_uranium_window
 	max_integrity = 500
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/mineral/uranium
 	rad_insulation = RAD_FULL_INSULATION
 
-/datum/armor/depleted_uranium
-	melee = 45
-	bullet = 20
-	bomb = 60
-	fire = 100
-	acid = 100
+
+
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/spawner, 0)
 
@@ -595,273 +570,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/spawner
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/unanchored/spawner, 0)
 
-/* Full Tile Windows (more atom_integrity) */
-
-/obj/structure/window/fulltile
-	icon = 'icons/obj/smooth_structures/windows/window.dmi'
-	icon_state = "window-0"
-	base_icon_state = "window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	max_integrity = 100
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-
-/obj/structure/window/fulltile/unanchored
-	anchored = FALSE
-
-//to be converted to ordinary instead of reinforced
-/obj/structure/window/depleteduranium/fulltile
-	icon = 'icons/obj/smooth_structures/windows/reinforced_DU_window.dmi'
-	icon_state = "reinforced_DU_window-0"
-	base_icon_state = "reinforced_DU_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	max_integrity = 500
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	rad_insulation = RAD_FULL_INSULATION
-	glass_amount = 2
-
-/obj/structure/window/depleteduranium/fulltile/unanchored
-	anchored = FALSE
-
-/obj/structure/window/depleteduranium/fulltile/debug
-	name = "unbreakable depleted uranium window"
-	max_integrity = INFINITY
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-
-/obj/structure/window/plasma/fulltile
-	icon = 'icons/obj/smooth_structures/windows/plasma_window.dmi'
-	icon_state = "plasma_window-0"
-	base_icon_state = "plasma_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	max_integrity = 600
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-
-/obj/structure/window/plasma/fulltile/unanchored
-	anchored = FALSE
-
-/obj/structure/window/reinforced/plasma/fulltile
-	icon = 'icons/obj/smooth_structures/windows/reinforced_plasma_window.dmi'
-	icon_state = "reinforced_plasma_window-0"
-	base_icon_state = "reinforced_plasma_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	max_integrity = 4000
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-
-/obj/structure/window/reinforced/plasma/fulltile/unanchored
-	anchored = FALSE
-
-/obj/structure/window/reinforced/fulltile
-	icon = 'icons/obj/smooth_structures/windows/reinforced_window.dmi'
-	icon_state = "reinforced_window-0"
-	base_icon_state = "reinforced_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	max_integrity = 200
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-
-/obj/structure/window/reinforced/fulltile/unanchored
-	anchored = FALSE
-
-/obj/structure/window/reinforced/tinted/fulltile
-	icon = 'icons/obj/smooth_structures/windows/tinted_window.dmi'
-	icon_state = "tinted_window-0"
-	base_icon_state = "tinted_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-
-/obj/structure/window/reinforced/tinted/fulltile/nightclub
-	color = "#9b1d70"
-
-/obj/structure/window/reinforced/fulltile/ice
-	icon = 'icons/obj/smooth_structures/windows/rice_window.dmi'
-	icon_state = "rice_window-0"
-	base_icon_state = "rice_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE)
-	max_integrity = 150
-	glass_amount = 2
-
-/obj/structure/window/reinforced/shuttle
-	name = "shuttle window"
-	desc = "A reinforced, air-locked pod window."
-	icon = 'icons/obj/smooth_structures/windows/shuttle_window.dmi'
-	icon_state = "shuttle_window-0"
-	base_icon_state = "shuttle_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE)
-	max_integrity = 500
-	wtype = "shuttle"
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	reinf = TRUE
-	heat_resistance = 1600
-	armor_type = /datum/armor/window_shuttle
-	explosion_block = 3
-	glass_type = /obj/item/stack/sheet/titaniumglass
-	glass_amount = 2
-	ricochet_chance_mod = 0.9
-
-/obj/structure/window/reinforced/shuttle/unanchored
-	anchored = FALSE
-
-/datum/armor/window_shuttle
-	melee = 50
-	bomb = 50
-	fire = 80
-	acid = 100
-
-/obj/structure/window/shuttle/narsie_act()
-	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
-
-/obj/structure/window/shuttle/tinted
-	opacity = TRUE
-
-/obj/structure/window/shuttle/unanchored
-	anchored = FALSE
-
-/obj/structure/window/reinforced/plasma/plastitanium
-	name = "plastitanium window"
-	desc = "A durable looking window made of an alloy of of plasma and titanium."
-	icon = 'icons/obj/smooth_structures/windows/plastitanium_window.dmi'
-	icon_state = "plastitanium_window-0"
-	base_icon_state = "plastitanium_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM)
-	max_integrity = 200
-	wtype = "shuttle"
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	reinf = TRUE
-	heat_resistance = 1600
-	armor_type = /datum/armor/window_plastitanium
-	explosion_block = 3
-	glass_type = /obj/item/stack/sheet/plastitaniumglass
-	glass_amount = 2
-
-
-/datum/armor/window_plastitanium
-	melee = 50
-	bomb = 50
-	fire = 80
-	acid = 100
-
-/obj/structure/window/reinforced/plasma/plastitanium/unanchored
-	anchored = FALSE
-
-/obj/structure/window/paperframe
-	name = "paper frame"
-	desc = "A fragile separator made of thin wood and paper."
-	icon = 'icons/obj/smooth_structures/windows/paperframes.dmi'
-	icon_state = "paperframes-0"
-	base_icon_state = "paperframes"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_PAPERFRAME)
-	canSmoothWith = list(SMOOTH_GROUP_PAPERFRAME)
-	opacity = TRUE
-	max_integrity = 15
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	glass_amount = 2
-	glass_type = /obj/item/stack/sheet/paperframes
-	heat_resistance = 233
-	decon_speed = 10
-	can_atmos_pass = ATMOS_PASS_YES
-	resistance_flags = FLAMMABLE
-	armor_type = /datum/armor/none
-	knocksound = "pageturn"
-	bashsound = 'sound/weapons/slashmiss.ogg'
-	breaksound = 'sound/items/poster_ripped.ogg'
-	hitsound = 'sound/weapons/slashmiss.ogg'
-	var/static/mutable_appearance/torn = mutable_appearance('icons/obj/smooth_structures/windows/paperframes.dmi',icon_state = "torn", layer = ABOVE_OBJ_LAYER - 0.1)
-	var/static/mutable_appearance/paper = mutable_appearance('icons/obj/smooth_structures/windows/paperframes.dmi',icon_state = "paper", layer = ABOVE_OBJ_LAYER - 0.1)
-
-/obj/structure/window/paperframe/Initialize(mapload)
-	. = ..()
-	update_appearance()
-
-/obj/structure/window/paperframe/examine(mob/user)
-	. = ..()
-	if(atom_integrity < max_integrity)
-		. += span_info("It looks a bit damaged, you may be able to fix it with some <b>paper</b>.")
-
-/obj/structure/window/paperframe/spawnDebris(location)
-	. = list(new /obj/item/stack/sheet/wood(location))
-	for (var/i in 1 to rand(1,4))
-		. += new /obj/item/paper/natural(location)
-
-/obj/structure/window/paperframe/attack_hand(mob/living/user, list/modifiers)
-	. = ..()
-	if(.)
-		return
-	add_fingerprint(user)
-	if(user.combat_mode)
-		take_damage(4,BRUTE,MELEE, 0)
-		if(!QDELETED(src))
-			update_appearance()
-
-/obj/structure/window/paperframe/update_icon()
-	if(atom_integrity < max_integrity)
-		cut_overlay(paper)
-		add_overlay(torn)
-		set_opacity(FALSE)
-	else
-		cut_overlay(torn)
-		add_overlay(paper)
-		set_opacity(TRUE)
-	QUEUE_SMOOTH(src)
-
-
-/obj/structure/window/paperframe/attackby(obj/item/W, mob/living/user)
-	if(W.get_temperature())
-		fire_act(W.get_temperature())
-		return
-	if(user.combat_mode)
-		return ..()
-	if(istype(W, /obj/item/paper) && atom_integrity < max_integrity)
-		user.visible_message("[user] starts to patch the holes in \the [src].")
-		if(do_after(user, 20, target = src))
-			atom_integrity = min(atom_integrity+4,max_integrity)
-			qdel(W)
-			user.visible_message("[user] patches some of the holes in \the [src].")
-			if(atom_integrity == max_integrity)
-				update_appearance()
-			return
-	..()
-	update_appearance()
-
 /obj/structure/window/bronze
 	name = "brass window"
 	desc = "A paper-thin pane of translucent yet reinforced brass. Nevermind, this is just weak bronze!"
@@ -872,22 +580,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/unancho
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/bronze/spawner, 0)
 
 /obj/structure/window/bronze/unanchored
-	anchored = FALSE
-
-/obj/structure/window/bronze/fulltile
-	icon = 'icons/obj/smooth_structures/windows/clockwork_window.dmi'
-	icon_state = "clockwork_window-0"
-	base_icon_state = "clockwork_window"
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WINDOW_FULLTILE_BRONZE)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	fulltile = TRUE
-	flags_1 = PREVENT_CLICK_UNDER_1
-	obj_flags = CAN_BE_HIT
-	max_integrity = 50
-	glass_amount = 2
-
-/obj/structure/window/bronze/fulltile/unanchored
 	anchored = FALSE
 
 /obj/structure/window/bronze/corner

@@ -29,7 +29,7 @@
 /turf/open/floor/eighties,
 /area/ruin/space/has_grav/powered)
 "j" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/carpet/purple,
 /area/ruin/space/has_grav/powered)
 "k" = (

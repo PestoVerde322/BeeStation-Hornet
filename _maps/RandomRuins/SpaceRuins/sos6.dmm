@@ -6,7 +6,7 @@
 /turf/closed/wall/r_wall/rust,
 /area/ruin/unpowered)
 "c" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/mineral/plastitanium/red,
 /area/ruin/unpowered)
 "d" = (

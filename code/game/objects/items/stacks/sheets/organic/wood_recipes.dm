@@ -74,7 +74,7 @@ STACKSIZE_MACRO(/obj/item/stack/sheet/bamboo)
 /* Paper frames */
 
 GLOBAL_LIST_INIT(paperframe_recipes, list(
-	new /datum/stack_recipe("paper frame separator", /obj/structure/window/paperframe, 2, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND | CRAFT_IS_FULLTILE, time = 1 SECONDS), \
+	new /datum/stack_recipe("paper frame separator", /obj/structure/window/fulltile/paperframe, 2, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND | CRAFT_IS_FULLTILE, time = 1 SECONDS), \
 	new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperframe, 3, crafting_flags = CRAFT_CHECK_DENSITY | CRAFT_ONE_PER_TURF | CRAFT_ON_SOLID_GROUND, time = 1 SECONDS )
 ))
 

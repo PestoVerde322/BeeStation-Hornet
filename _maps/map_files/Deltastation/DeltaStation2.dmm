@@ -12866,7 +12866,7 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/sunnybush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/station/hallway/secondary/exit/departure_lounge)
 "eHg" = (
@@ -36683,7 +36683,7 @@
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/ywflowers,
 /obj/structure/flora/ausbushes/fernybush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/station/hallway/secondary/exit/departure_lounge)
 "lDQ" = (

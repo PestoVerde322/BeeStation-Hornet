@@ -9259,7 +9259,7 @@
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /obj/machinery/light{
 	dir = 8
 	},
@@ -12664,7 +12664,7 @@
 /obj/structure/flora/ausbushes/fernybush,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /obj/machinery/light{
 	dir = 4
 	},
@@ -15284,7 +15284,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/tdome/observation)
 "aNT" = (
-/obj/structure/window/paperframe,
+/obj/structure/window/fulltile/paperframe,
 /turf/open/floor/wood,
 /area/centcom/central_command_areas/holding)
 "aNU" = (
@@ -16239,7 +16239,7 @@
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/holding)
 "aQl" = (
@@ -16452,7 +16452,7 @@
 /obj/structure/flora/ausbushes/fernybush,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/holding)
 "aQM" = (
@@ -17550,7 +17550,7 @@
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/holding)
 "aTv" = (
@@ -18358,7 +18358,7 @@
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/ppflowers,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /obj/machinery/light,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/holding)
@@ -18973,7 +18973,7 @@
 /obj/structure/flora/ausbushes/fernybush,
 /obj/structure/flora/ausbushes/fullgrass,
 /obj/structure/flora/ausbushes/palebush,
-/obj/structure/window/reinforced/fulltile,
+/obj/structure/window/fulltile/reinforced,
 /turf/open/floor/grass,
 /area/centcom/central_command_areas/holding)
 "aXe" = (

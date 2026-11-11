@@ -2119,6 +2119,8 @@
 #include "code\game\objects\structures\transit_tubes\transit_tube_construction.dm"
 #include "code\game\objects\structures\transit_tubes\transit_tube_pod.dm"
 #include "code\game\objects\structures\windows\_window.dm"
+#include "code\game\objects\structures\windows\window_armor.dm"
+#include "code\game\objects\structures\windows\window_fulltile.dm"
 #include "code\game\turfs\baseturf_skipover.dm"
 #include "code\game\turfs\baseturfs.dm"
 #include "code\game\turfs\change_turf.dm"

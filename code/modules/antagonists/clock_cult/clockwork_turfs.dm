@@ -604,7 +604,7 @@
 /obj/structure/window/reinforced/clockwork/unanchored
 	anchored = FALSE
 
-/obj/structure/window/reinforced/clockwork/fulltile
+/obj/structure/window/fulltile/reinforced/clockwork
 	icon = 'icons/obj/smooth_structures/windows/clockwork_window.dmi'
 	icon_state = "clockwork_window-0"
 	base_icon_state = "clockwork_window"
@@ -629,7 +629,7 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window/reinforced/clockwork)
 	return ..()
 
 
-/obj/structure/window/reinforced/clockwork/fulltile/unanchored
+/obj/structure/window/fulltile/reinforced/clockwork/unanchored
 	anchored = FALSE
 
 #undef COGWALL_DECON_TOOLS

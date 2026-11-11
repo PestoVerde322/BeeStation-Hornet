@@ -13,7 +13,7 @@
 	},
 /area/template_noop)
 "d" = (
-/obj/structure/window/paperframe,
+/obj/structure/window/fulltile/paperframe,
 /turf/open/floor/holofloor{
 	dir = 9;
 	icon_state = "wood"
