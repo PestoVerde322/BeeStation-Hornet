@@ -613,10 +613,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/unancho
 /obj/structure/window/fulltile/unanchored
 	anchored = FALSE
 
+//to be converted to ordinary instead of reinforced
 /obj/structure/window/depleteduranium/fulltile
-	icon = 'icons/obj/smooth_structures/windows/du_window.dmi'
-	icon_state = "du_window-0"
-	base_icon_state = "du_window"
+	icon = 'icons/obj/smooth_structures/windows/reinforced_DU_window.dmi'
+	icon_state = "reinforced_DU_window-0"
+	base_icon_state = "reinforced_DU_window"
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
@@ -652,9 +653,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/depleteduranium/corner/unancho
 	anchored = FALSE
 
 /obj/structure/window/reinforced/plasma/fulltile
-	icon = 'icons/obj/smooth_structures/windows/rplasma_window.dmi'
-	icon_state = "rplasma_window-0"
-	base_icon_state = "rplasma_window"
+	icon = 'icons/obj/smooth_structures/windows/reinforced_plasma_window.dmi'
+	icon_state = "reinforced_plasma_window-0"
+	base_icon_state = "reinforced_plasma_window"
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE)
