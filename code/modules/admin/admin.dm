@@ -534,7 +534,7 @@
 			chosen_path = matches[1]
 
 	if(!chosen_path)
-		if (!spawn_menu)
+		if (!spawn_menu)//broken
 			spawn_menu = new()
 		spawn_menu.init_value = object
 		spawn_menu.ui_interact(usr)
@@ -564,7 +564,7 @@
 	if(!check_rights(R_SPAWN))
 		return
 
-	if(!spawn_panel)
+	if(!spawn_panel)//broken
 		spawn_panel = new()
 	spawn_panel.ui_interact(usr)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Spawn Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
