@@ -32,12 +32,12 @@
 	var/decon_speed = 30
 	/// Is it fulltile or a pane?
 	var/fulltile = FALSE
-	/// Does it have a border (if next to a wall or door or antthing that adds a border by proximity,
-	/// apply to fulltile for now)?
+	/// Does it have a border next to a wall and how many in all cardinalities?
 	var/bordWall = FALSE
 	var/list/bordWallDir = list()
-	/*var/bordDoor = FALSE
-	var/list/bordDoorDir = list()*/
+	/// Does it have a border next to a door and how many in all cardinalities?
+	var/bordDoor = FALSE
+	var/list/bordDoorDir = list()
 	/// Type of debris when it's broken
 	var/glass_type = /obj/item/stack/sheet/glass
 	/// How much material is yielded when deconstructed?
@@ -75,8 +75,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)
 		. += span_notice("That's an unusually <b>big</b> window... Maybe it has an hollow padding?")
 		if(bordWall)
 			. += span_notice("<b>DEBUG:</b> bordering a wall - dir: ")
-//		if(bordDoor)
-//			. += span_notice("<b>DEBUG:</b> bordering a door - dir: ")
+		if(bordDoor)
+			. += span_notice("<b>DEBUG:</b> bordering a door - dir: ")
 	if(reinf)
 		. += span_notice("This window is reinforced with rebars.")
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
@@ -103,20 +103,21 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		state = WINDOW_SCREWED_TO_FRAME
 		if(fulltile)
 			for(var/direction in GLOB.alldirs)
-//			var/atom/adj_door = get_step(src, direction)
-			var/turf/closed/adj_turf = get_step(src, direction)
-			if(istype(adj_turf, /turf/closed/wall))
-				bordWall = TRUE
-				bordWallDir += direction
-				var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "tile_breaker", alpha = 200)
-				add_overlay(debugAppearance)
-				break
-			/*if(istype(adj_door, /obj/machinery/door))
-				bordDoor = TRUE
-				bordDoorDir += direction
-				var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "airlock_cyclelink_helper", alpha = 200)
-				add_overlay(debugAppearance)
-				break*/
+				var/turf/closed/adj_turf = get_step(src, direction)
+				//var/obj/machinery/adj_door = get_step(src, direction)
+				if(istype(adj_turf, /turf/closed/wall))
+					bordWall = TRUE
+					bordWallDir += direction
+					var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "tile_breaker", alpha = 200)
+					add_overlay(debugAppearance)
+					continue
+				else
+					for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
+						bordDoor = TRUE
+						bordDoorDir += direction
+						var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "airlock_cyclelink_helper", alpha = 200)
+						add_overlay(debugAppearance)
+						continue
 
 	air_update_turf(TRUE, TRUE)
 

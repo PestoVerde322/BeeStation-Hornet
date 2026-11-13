@@ -179,7 +179,6 @@
 	icon_state = "rice_window-0"
 	base_icon_state = "rice_window"
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 150
 
 /obj/structure/window/fulltile/reinforced/shuttle
