@@ -512,7 +512,6 @@ This proc checks the surrounding of the core to ensure that the machine has been
 	var/obj/effect/nuclear_sludge_spawner/strong/nuclear_sludge_spawner = new(reactor_turf)
 	nuclear_sludge_spawner.fire() //This will take out engineering for a decent amount of time as they have to clean up the sludge.
 	meltdown() //Double kill.
-<<<<<<< HEAD
 
 //Plutonium sludge
 
@@ -587,5 +586,3 @@ This proc checks the surrounding of the core to ensure that the machine has been
 #undef PLUTONIUM_SLUDGE_RANGE_STRONG
 #undef PLUTONIUM_SLUDGE_RANGE_WEAK
 #undef PLUTONIUM_SLUDGE_CHANCE
-=======
->>>>>>> 594db22c6a79cc74bf9a67bde768988759035f01
