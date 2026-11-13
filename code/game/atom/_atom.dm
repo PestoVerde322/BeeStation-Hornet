@@ -424,7 +424,7 @@
 /atom/proc/AllowDrop()
 	return FALSE
 
-///Is this atom within 1 tile of another atom
+///Is this atom within 1 tile of another movable atom
 /atom/proc/HasProximity(atom/movable/AM as mob|obj)
 	return
 

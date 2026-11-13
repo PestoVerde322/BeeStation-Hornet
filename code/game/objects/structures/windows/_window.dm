@@ -32,6 +32,10 @@
 	var/decon_speed = 30
 	/// Is it fulltile or a pane?
 	var/fulltile = FALSE
+	/// Does it have a border (if next to a wall or door or antthing that adds a border by proximity, apply to fulltile for now)?
+	var/bordrWall = FALSE
+	var/bordrDoor = FALSE
+	var/borderedDir = null
 	/// Type of debris when it's broken
 	var/glass_type = /obj/item/stack/sheet/glass
 	/// How much material is yielded when deconstructed?
@@ -67,6 +71,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)
 	. = ..()
 	if(fulltile)
 		. += span_notice("That's an unusually <b>big</b> window... Maybe it has an hollow padding?")
+		if(bordrWall)
+			. += span_notice("<b>DEBUG:</b> bordering a wall - dir: ")
+		if(bordrDoor)
+			. += span_notice("<b>DEBUG:</b> bordering a door - dir: ")
 	if(reinf)
 		. += span_notice("This window is reinforced with rebars.")
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
@@ -98,6 +106,21 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		setDir()
 		obj_flags &= ~BLOCKS_CONSTRUCTION_DIR
 		obj_flags &= ~IGNORE_DENSITY
+		for(var/direction in GLOB.alldirs)
+			var/turf/closed/adj_turf = get_step(src, direction)
+			var/obj/adj_door = get_step(src, direction)
+			if(istype(adj_turf, /turf/closed/wall))
+				bordrWall = TRUE
+				borderedDir = direction
+				var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "tile_breaker", alpha = 200)
+				add_overlay(debugAppearance)
+				break
+			if(istype(adj_door, /obj/machinery/door))
+				bordrDoor = TRUE
+				borderedDir = direction
+				var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "airlock_cyclelink_helper", alpha = 200)
+				add_overlay(debugAppearance)
+				break
 	else
 		AddElement(/datum/element/simple_rotation, ROTATION_NEEDS_ROOM, post_rotation_proccall = PROC_REF(post_rotation))
 
