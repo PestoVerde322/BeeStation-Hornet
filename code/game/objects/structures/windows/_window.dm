@@ -4,9 +4,9 @@
 	icon = 'icons/obj/structures/windows.dmi'
 	icon_state = "window"
 	density = TRUE
-	layer = ABOVE_OBJ_LAYER //Just above doors
+	layer = ABOVE_OBJ_LAYER // Above doors
 	pressure_resistance = 4*ONE_ATMOSPHERE
-	anchored = TRUE //initially is 0 for tile smoothing
+	anchored = TRUE
 	flags_1 = ON_BORDER_1
 	obj_flags = CAN_BE_HIT | BLOCKS_CONSTRUCTION_DIR | IGNORE_DENSITY
 
@@ -44,6 +44,8 @@
 	var/glass_amount = 1
 	/// Overlay for damaged states, only apply to fulltiles *currently*
 	var/mutable_appearance/crack_overlay
+	/// Overlay for trims, only apply to fulltiles *currently*
+	var/mutable_appearance/trim_overlay
 	/// Ignore this, just use explosion_block
 	var/real_explosion_block
 	/// Various sounds effect
@@ -57,6 +59,9 @@
 
 	/// If we added a leaning component to ourselves
 	var/added_leaning = FALSE
+
+	///For debug purposes, remove and adjust everything when you're done with
+	var/debug_window = TRUE
 
 /obj/structure/window/corner
 	icon_state = "window_corner"
@@ -73,10 +78,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)
 	. = ..()
 	if(fulltile)
 		. += span_notice("That's an unusually <b>big</b> window... Maybe it has an hollow padding?")
-		if(bordWall)
-			. += span_notice("<b>DEBUG:</b> bordering a wall - dir: ")
-		if(bordDoor)
-			. += span_notice("<b>DEBUG:</b> bordering a door - dir: ")
+		if(debug_window)
+			if(bordWall)
+				. += span_notice("<b>DEBUG:</b> bordering a wall - dir:")
+				for(var/ofWalldirs in bordWallDir)
+					. += span_notice("[ofWalldirs]")
+			if(bordDoor)
+				. += span_notice("<b>DEBUG:</b> bordering a door - dir:")
+				for(var/ofDoordirs in bordDoorDir)
+					. += span_notice("[ofDoordirs]")
 	if(reinf)
 		. += span_notice("This window is reinforced with rebars.")
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
@@ -101,23 +111,7 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		setDir(direct)
 	if(reinf && anchored)
 		state = WINDOW_SCREWED_TO_FRAME
-		if(fulltile)
-			for(var/direction in GLOB.alldirs)
-				var/turf/closed/adj_turf = get_step(src, direction)
-				//var/obj/machinery/adj_door = get_step(src, direction)
-				if(istype(adj_turf, /turf/closed/wall))
-					bordWall = TRUE
-					bordWallDir += direction
-					var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "tile_breaker", alpha = 200)
-					add_overlay(debugAppearance)
-					continue
-				else
-					for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
-						bordDoor = TRUE
-						bordDoorDir += direction
-						var/debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "airlock_cyclelink_helper", alpha = 200)
-						add_overlay(debugAppearance)
-						continue
+		windowSmoothLite()
 
 	air_update_turf(TRUE, TRUE)
 
@@ -433,6 +427,30 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(fulltile || (dir == to_dir))
 		return 0
 	return 1
+
+/// Before I get eviscerated by more skilled coders saying "JUST USE 8-BIT SMOOTHING ALREADY", let me learn how to code in dm properly, and really i can't see an instance
+/// where *that* was used to append an icon on top of an already smoothing item, or any other case like that really, so...
+/obj/structure/window/proc/windowSmoothLite()
+	if(fulltile)
+		for(var/direction in GLOB.cardinals) //we will use a 4 dir way, simply to not lose my sanity to use the icon cutter tool, not optimized, but it will do the job
+			var/turf/closed/adj_turf = get_step(src, direction)
+			var/debugAppearance = null
+			if(istype(adj_turf, /turf/closed/wall))
+				bordWall = TRUE
+				bordWallDir += direction
+				if(debug_window)
+					debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "4dir_helper_red", alpha = 180)
+					add_overlay(debugAppearance)
+				continue
+			else
+				for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
+					bordDoor = TRUE
+					bordDoorDir += direction
+					if(debug_window)
+						var/mutable_appearance/dirDebug_door = mutable_appearance('icons/effects/mapping_helpers.dmi', "4dir_helper_green", alpha = 180)
+						debugAppearance = make_mutable_appearance_directional(dirDebug_door, bordDoorDir)
+						add_overlay(debugAppearance)
+					continue
 
 /obj/structure/window/GetExplosionBlock()
 	return reinf && fulltile ? real_explosion_block : 0
