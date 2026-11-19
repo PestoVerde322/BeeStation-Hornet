@@ -80,3 +80,149 @@
       \ is interrupted."
   - rscadd: Broken APC covers can be replaced with a new frame, closing the panel,
       will turn on the power, Engineering borgs can fit the frame with a screwdriver
+  mrmanlikesbt, Arkatos, Melbert, Sealed101, vinylspiders:
+  - qol: Interacting with a cyborg chassis now uses TGUI instead of a HTML menu.
+  - qol: Added screentips for cyborg chassis.
+  - qol: Examining a MMI now gives more detailed information on the status of the
+      brain.
+  - bugfix: Fixed cyborgs being ghosted when they dropped an MMI (when gibbed or deconstructed).
+  - bugfix: Fixed cyborgs not being disconnected when their parent AI was deleted.
+  - bugfix: Fixed a runtime when a person was transformed into a cyborg by either
+      wabbajack or adminbus.
+  - bugfix: Fixed various potential harddels related to cyborg construction.
+  - bugfix: Fixed objects sometimes appearing as being a few levels below you when
+      they were on the same level.
+  - bugfix: Fixed silicons playing two death gasps when they died.
+  - bugfix: Fixed silicons not having their HUDs updated on death.
+2026-11-10:
+  rkz/tsar-salat:
+  - rscadd: adds temporary access system to IDs
+  - tweak: Lowpop skeleton crew access has been significantly reworked. The access
+      provided by skeleton access is now dynamic and based on current population rather
+      than population at roundstart. Skeleton access is also now temporary and per
+      department. It ends 5 minutes after the covered job is filled (i.e. Medical
+      Doctors with Chemistry access) or enough crew arrive, and comes back if they
+      leave
+  - rscadd: Promoting someone to a head job at an ID console makes them an Acting
+      head (title, HUD, access, command pay) on top of their own job. Only people
+      who join as the head (latejoin/join from lobby) are full heads
+  - bugfix: giving a head or acting head a custom job title no longer breaks that
+      job in the manifest or elsewhere in the code (that ended up being really important)
+  - rscadd: An acting head's access, title, and command pay ends 5 minutes after a
+      real head of that job arrives. The jobber who was acting head reverts to their
+      previous title and access.
+  - rscadd: ID cards announce access changes. They will brief the jobber if they have
+      a mantle/acting role and skeleton access after they spawn
+  - rscadd: Examining an ID card will show its current mantle (if any) and list its
+      temporary access
+  - tweak: Agent ID cards steal temp access as permanent access.
+  - bugfix: cryo reopens job slots again
+  - bugfix: a second ID in a PDA no longer mutates the access of the first ID
+2026-11-11:
+  Kubsius:
+  - tweak: allowed speech component to have language options
+  - code_imp: added the station_languages global list for common station languages
+  SergeiKoralev:
+  - map: Supermatter gas input from connectors now pumps into the waste loop.
+  - map: Removed redundant filters in the supermatter waste/exhaust loop
+  - map: Supermatter gas harvesting position adjusted on all stations.
+  - map: Tweaked positions of supermatter gas meters, decals, and some portable atmos
+      equipment.
+2026-11-12:
+  mrmanlikesbt, vinylspiders:
+  - github: Tool installation, .NET setup, and artifact downloading have been removed
+      from the GitHub CI Suite workflow. This should hopefully make status checks
+      less flaky, requiring less manual workflow restarts from maintainers.
+  ? rkz, GoldenAlpharex, vinylspiders, falconignite, lizardqueenlexi, LemonInTheDark,
+    Time-Green, Melbert, SmArtKar, Runi-c, ghommie, TealSeer
+  : - imageadd: Lizards have been resprited, as well as Digitigrade sprites. Please
+        remember to update your colors to account for this.
+    - rscadd: Digitigrade lizards now get auto-generated clothing sprites for most
+        jumpsuits, and can wear certain shoes and oversuits (sneakers, some boots,
+        and the shaft miner's explorer suit) without hiding their legs.
+    - image: Added digitigrade shoe and oversuit sprite templates.
+    - image: Monkeys and lizards now have their own face spraypaint overlays.
+    - bugfix: Left and right legs no longer render on top of one another, so characters
+        look the same facing east and west.
+    - bugfix: The preference dummy now properly updates when changing species features.
+    - refactor: Lizard and moth body markings, creampies, and spray paint now all
+        run through the bodypart overlay system.
+    - code_imp: Cleaned up tail, leg, and body marking rendering code, and cut a large
+        number of redundant sprite update calls for better performance.
+    - qol: Cult pylons, rod of asclepius, and space dragon rifts will now give you
+        an alert as feedback for when you are being healed by them.
+    - rscadd: Adds the flesh reshaper to genetics and the Gene Engineering techweb!
+        Restyle all those visual organs! Don't like your moth coworkers' wings? Restyle
+        them to your liking!
+    - refactor: Refactored clothing obscurity entirely. Items should be a loooot more
+        consistent and what covers what, and should update a lot snappier. As always,
+        report any oddities, like mysteriously disappearing articles of clothing,
+        hair, or species parts
+    - bugfix: Some masks no longer hide lizard frills.
+    - rscadd: Hats that flatten hair now also flatten lizard frills a bit.
+    - rscdel: Spacesuits no longer fully conceal lizard tails
+    - rscadd: Species features like wings and tails will appear "meshed over" when
+        wearing certain equipment like spacesuits or biosuits.
+    - rscadd: Biosuits and beekeeper suit sprites now altar when worn by digitigrade
+        mobs.
+    - rscadd: Aprons and overalls sprites now altar when worn by digitigrade mobs.
+2026-11-13:
+  Tsar-Salat:
+  - bugfix: prisoners no longer get skeleton access or are considered in its pop counter
+  mrmanlikesbt:
+  - github: auxtools 3.0 is now included as a recommended VScode extension and a new
+      launch task has been created to use it. It's primary features include hot-reloading.
+      This means that you can make changes to the game's code in real-time without
+      having to recompile the whole project and start a new server.
+2026-11-15:
+  Baherain:
+  - bugfix: Changed addiction tolerance of Morphine from 10u to 25u, to match the
+      wiki page
+  Isaac, BotTierPC:
+  - rscadd: New sliders in the medibot for brute, burn, toxin, suffocation make your
+      own medibot!
+  - rscadd: New UI design for all bots
+  - bugfix: You wont hit a medibot when trying to insert a bag inside
+  Ucksus:
+  - bugfix: fixed Clock component not using Clock divider correctly
+  afonsofpuga-a11y:
+  - bugfix: Fixed your chat being spammed with errors when trying to craft something
+      with cable coils.
+2026-11-17:
+  BotTierPC, Amanitaspooder:
+  - rscadd: Adds A Lantern Varient, The Paper Lantern! This, And Mining Lanterns Are
+      Both Now Buildable In The Misc Tab Of The Crafting Menu!
+  Programs-The-Station:
+  - rscadd: Adds a for-each wiremod component, which will iterate over a list one
+      item at a time.
+2026-11-18:
+  BotTierPC, Racc-Off, BlerpFish, Rkz:
+  - rscadd: Added the Spoon! Can be printed in Autolathes or bought from the Dinnerware
+      Vendor
+  - tweak: 'Expanded the Fork/Omelette Interaction: Forks can now be used on all (non-soup)
+      food items, they''ll pick up a chunk of the food that can then be eaten! Spoons
+      work similarly, but will only function on soup food items!'
+  - tweak: Forks, and Spoons now fit on plates.
+  Tsar-Salat:
+  - bugfix: fix clowncar unable to bump open doors
+  - bugfix: fixes 10+ xenoartifact reactions
+  - bugfix: calcified xenoartifacts say when they calcify
+  - bugfix: shuttles no longer lose power when rotated
+  - bugfix: fixes the spawner menu
+  - bugfix: character ages no longer get shared between charslots
+  - bugfix: non-gygax mechs can deactivate overclocking
+  - bugfix: fixed cargo crate export values being 1 credit. crates are now all recyclable
+      through exports again
+  - bugfix: xenoartifact pearls can be extracted again
+2026-11-19:
+  SunShine214, Niko432, Racc-Off, Wrill:
+  - rscadd: Added the CDR (Condensate Decay Reactor), which decays gases to make power!
+  - rscadd: Added a new PDA program to control CDRs. Check the engineering tab in
+      the NTnet store!
+  - rscadd: Added a new pump_gas_volume proc to gas_mixture, which... pumps volume!
+  - rscdel: Removed the TEG.
+  Ucksus:
+  - balance: discovery scanner now returns a reasonable amount of discovery points
+      from artifacts.
+  mrmanlikesbt:
+  - bugfix: Fixed various TGUI text inputs crashing when pressing Enter
