@@ -889,10 +889,12 @@
 
 /atom/movable/proc/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	set waitfor = FALSE
+	if(QDELETED(hit_atom))
+		return TRUE
 	var/hitpush = TRUE
 	var/impact_flags = pre_impact(hit_atom, throwingdatum)
 	if(impact_flags & COMPONENT_MOVABLE_IMPACT_NEVERMIND)
-		return // in case a signal interceptor broke or deleted the thing before we could process our hit
+		return TRUE // in case a signal interceptor broke or deleted the thing before we could process our hit
 	if(impact_flags & COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH)
 		hitpush = FALSE
 	var/caught = hit_atom.hitby(src, throwingdatum=throwingdatum, hitpush=hitpush)
@@ -1143,6 +1145,11 @@
 	animate(time = 0.1 SECONDS)
 	animate(alpha = 0, time = 0.3 SECONDS, easing = CIRCULAR_EASING|EASE_OUT)
 
+/mob/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item)
+	if(used_item && !visual_effect_icon && animate_interact(attacked_atom, INTERACT_GENERIC, used_item))
+		return
+	return ..()
+
 /// Common proc used by painting tools like spraycans and palettes that can access the entire 24 bits color space.
 /obj/item/proc/pick_painting_tool_color(mob/user, default_color)
 	var/chosen_color = tgui_color_picker(user,"Pick new color", "[src]", default_color)
@@ -1365,7 +1372,6 @@
 				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 /obj/item/proc/do_pickup_animation(atom/target, turf/source)
-	set waitfor = FALSE
 	if(!source)
 		if(!istype(loc, /turf))
 			return

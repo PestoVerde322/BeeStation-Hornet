@@ -14,7 +14,7 @@
 		return FALSE
 	if(shoes && isclothing(shoes))
 		var/obj/item/clothing/CS = shoes
-		if ((CS.clothing_flags & NOSLIP_ALL_WALKING) && src.move_intent == MOVE_INTENT_WALK)
+		if ((CS.clothing_flags & NOSLIP_ALL_WALKING) && MOVING_DELIBERATELY(src))
 			return FALSE
 	if (lube & GALOSHES_DONT_HELP)
 		return ..()
@@ -24,7 +24,7 @@
 		var/obj/item/clothing/CS = shoes
 		if (CS.clothing_flags & NOSLIP)
 			return FALSE
-		if ((CS.clothing_flags & NOSLIP_WALKING) && src.move_intent == MOVE_INTENT_WALK)
+		if ((CS.clothing_flags & NOSLIP_WALKING) && MOVING_DELIBERATELY(src))
 			return FALSE
 	return ..()
 
@@ -37,6 +37,6 @@
 		SEND_SIGNAL(shoes, COMSIG_SHOES_STEP_ACTION)
 
 /mob/living/carbon/human/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
-	if(dna.species.space_move(src))
+	if(movement_type & FLYING || HAS_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT))
 		return TRUE
 	return ..()

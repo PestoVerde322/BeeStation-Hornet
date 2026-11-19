@@ -200,7 +200,7 @@
 
 /obj/item/mod/module/weapon_recall/proc/set_weapon(obj/item/weapon)
 	linked_weapon = weapon
-	RegisterSignal(linked_weapon, COMSIG_MOVABLE_IMPACT, PROC_REF(catch_weapon))
+	RegisterSignal(linked_weapon, COMSIG_MOVABLE_PRE_IMPACT, PROC_REF(catch_weapon))
 	RegisterSignal(linked_weapon, COMSIG_QDELETING, PROC_REF(deleted_weapon))
 
 /obj/item/mod/module/weapon_recall/proc/recall_weapon(caught = FALSE)
@@ -411,7 +411,7 @@
 		INVOKE_ASYNC(mod.wearer, TYPE_PROC_REF(/atom/movable, say), pick_list_replacements(NINJA_FILE, "lines"), forced = type)
 	to_chat(mod.wearer, span_notice("You have used the adrenaline boost."))
 	mod.wearer.SetAllImmobility(0)
-	mod.wearer.adjustStaminaLoss(-200)
+	mod.wearer.stamina.adjust(200)
 	mod.wearer.remove_status_effect(/datum/status_effect/speech/stutter)
 	//Speed
 	mod.wearer.reagents.add_reagent(/datum/reagent/medicine/amphetamine, 5)
