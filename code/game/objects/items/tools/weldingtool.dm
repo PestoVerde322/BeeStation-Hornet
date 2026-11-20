@@ -1,12 +1,20 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
 #define WELDER_FUEL_BURN_INTERVAL 9
+
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
-	icon = 'icons/obj/tools.dmi'
+	icon = 'icons/obj/tools/welders.dmi'
 	icon_state = "welder"
 	inhand_icon_state = "welder"
 	worn_icon_state = "welder"
+	/// Things relative to the gauge and flame icon state, aswell positions
+	var/gauge_icon_state = "gauge"
+	var/gaugePos_x = 0
+	var/gaugePos_y = 0 //technically useless, but you may never know
+	var/flame_icon_state = "flame"
+	var/flamePos_x = 0
+	var/flamePos_y = 0
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY
@@ -20,7 +28,7 @@
 	var/acti_sound = 'sound/items/welderactivate.ogg'
 	var/deac_sound = 'sound/items/welderdeactivate.ogg'
 	light_system = MOVABLE_LIGHT
-	light_range = 2
+	light_range = 1.5
 	light_power = 0.75
 	light_on = FALSE
 	throw_speed = 3
@@ -29,15 +37,21 @@
 	armor_type = /datum/armor/item_weldingtool
 	resistance_flags = FIRE_PROOF
 	custom_price = 15
-
 	custom_materials = list(/datum/material/iron=70, /datum/material/glass=30)
-	///Whether the welding tool is on or off.
+	///The welding tool is on or off?
 	var/welding = FALSE
-	var/status = TRUE 		//Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
-	var/max_fuel = 20 	//The max amount of fuel the welder can hold
-	var/change_icons = 1
+	///The welding tool is secured or unsecured?(able to attach rods to it to make a flamethrower)
+	var/status = TRUE
+	var/status_variant = FALSE
+	///The max amount of fuel the welding tool  can hold
+	var/max_fuel = 20
+	///The welding tool starts full or empty?
+	var/start_empty = FALSE
+	///The welding tool has a gauge indicator?
+	var/gauge_indicator = TRUE
+	///The welding tool can process materials on the fly?
 	var/can_off_process = 0
-	light_color = LIGHT_COLOR_FIRE
+	light_color = LIGHT_COLOR_WELDER
 	var/progress_flash_divisor = 10
 	var/burned_fuel_for = 0	//when fuel was last removed
 	var/light_intensity = 2
@@ -56,25 +70,38 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddElement(/datum/element/falling_hazard, damage = force, hardhat_safety = TRUE, crushes = FALSE, impact_sound = hitsound)
 	create_reagents(max_fuel)
-	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
+	if (!start_empty)
+		reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	update_icon()
 
 /obj/item/weldingtool/update_icon_state()
-	if(welding)
-		inhand_icon_state = "[initial(inhand_icon_state)]1"
-	else
-		inhand_icon_state = "[initial(inhand_icon_state)]"
+	inhand_icon_state = "[initial(inhand_icon_state)][welding ? "1":""]"
+	if(status_variant)
+		icon_state = "[initial(icon_state)][max_fuel == 0 ? "_empty":""]"
 	return ..()
 
 /obj/item/weldingtool/update_overlays()
 	. = ..()
-	if(change_icons)
+	if(gauge_indicator)
 		var/ratio = get_fuel() / max_fuel
 		ratio = ceil(ratio*4) * 25
-		. += "[initial(icon_state)][ratio]"
+		var/mutable_appearance/gauge_overlay = mutable_appearance(icon, gauge_icon_state + "_[ratio]")
+		var/mutable_appearance/gauge_emissive = emissive_appearance(icon, gauge_icon_state + "_[ratio]", layer, alpha = 255)
+		gauge_overlay.pixel_x = gaugePos_x
+		gauge_overlay.pixel_y = gaugePos_y
+		. += gauge_overlay
+		gauge_emissive.pixel_x = gaugePos_x
+		gauge_emissive.pixel_y = gaugePos_y
+		. += gauge_emissive
 	if(welding)
-		. += "[initial(icon_state)]-on"
-
+		var/mutable_appearance/flame_overlay = mutable_appearance(icon, flame_icon_state)
+		var/mutable_appearance/flame_emissive = emissive_appearance(icon, flame_icon_state, layer, alpha = 255)
+		flame_overlay.pixel_x = flamePos_x
+		flame_overlay.pixel_y = flamePos_y
+		. += flame_overlay
+		flame_emissive.pixel_x = flamePos_x
+		flame_emissive.pixel_y = flamePos_y
+		. += flame_emissive
 
 /obj/item/weldingtool/process(delta_time)
 	if(welding)
@@ -307,13 +334,18 @@
 	else
 		return ""
 
+///////////////////////////////
+//welder variants from now on//
+///////////////////////////////
+
 /obj/item/weldingtool/largetank
 	name = "industrial welding tool"
 	desc = "A slightly larger welder with a larger tank."
-	icon_state = "indwelder"
+	icon_state = "welder_ind"
 	max_fuel = 40
 	custom_materials = list(/datum/material/glass=60)
 	custom_price = 25
+	gaugePos_x = -3
 
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
 	return
@@ -321,11 +353,11 @@
 /obj/item/weldingtool/mini
 	name = "emergency welding tool"
 	desc = "A miniature welder used during emergencies."
-	icon_state = "miniwelder"
+	icon_state = "welder_mini"
 	max_fuel = 10
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron=30, /datum/material/glass=10)
-	change_icons = 0
+	gauge_indicator = FALSE
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
 	return
@@ -333,11 +365,14 @@
 /obj/item/weldingtool/cyborg
 	name = "integrated welding tool"
 	desc = "An advanced welder designed to be used in robotic systems. Custom framework doubles the speed of welding."
-	icon = 'icons/obj/items_cyborg.dmi'
-	icon_state = "indwelder_cyborg"
+	icon_state = "welder_int_cyborg"
+	flame_icon_state = "flame"
+	gauge_icon_state = "gauge_int"
 	toolspeed = 0.5
 	max_fuel = 40
 	custom_materials = list(/datum/material/glass=60)
+	flamePos_y = -7
+	flamePos_x = 1
 
 /obj/item/weldingtool/cyborg/cyborg_unequip(mob/user)
 	if(!isOn())
@@ -353,27 +388,25 @@
 	switched_off(usr)
 	playsound(src, 'sound/items/cig_snuff.ogg', 50, 1)
 
-
 /obj/item/weldingtool/cyborg/mini
 	name = "integrated emergency welding tool"
-	desc = "A miniature integrated welder used during emergencies."
-	icon = 'icons/obj/tools.dmi'
-	icon_state = "miniwelder"
+	desc = "A miniature integrated welder designed to be used in robotic systems. To be used during emergencies."
+	icon_state = "welder_mini_cyborg"
 	max_fuel = 10
 	w_class = WEIGHT_CLASS_TINY
+	flamePos_y = -4
 	custom_materials = list(/datum/material/iron=30, /datum/material/glass=10)
-	change_icons = 0
 
 /obj/item/weldingtool/abductor
 	name = "alien welding tool"
 	desc = "An alien welding tool. Whatever fuel it uses, it never runs out."
-	icon = 'icons/obj/abductor.dmi'
-	icon_state = "welder"
+	icon_state = "welder_ayy"
+	flame_icon_state = "flame_ayy"
 	toolspeed = 0.1
 	light_system = NO_LIGHT_SUPPORT
 	light_range = 0
 	light_intensity = 0
-	change_icons = 0
+	gauge_indicator = FALSE
 	custom_price = 100
 
 /obj/item/weldingtool/abductor/process()
@@ -384,8 +417,10 @@
 /obj/item/weldingtool/hugetank
 	name = "upgraded industrial welding tool"
 	desc = "An upgraded welder based of the industrial welder."
-	icon_state = "upindwelder"
-	inhand_icon_state = "upindwelder"
+	icon_state = "welder_indup"
+	inhand_icon_state = "welder_indup"
+	gauge_icon_state = "gauge_up"
+	status_variant = TRUE
 	max_fuel = 80
 	custom_price = 50
 	custom_materials = list(/datum/material/iron=70, /datum/material/glass=120)
@@ -393,12 +428,12 @@
 /obj/item/weldingtool/experimental
 	name = "experimental welding tool"
 	desc = "An experimental welder capable of self-fuel generation and less harmful to the eyes."
-	icon_state = "exwelder"
-	inhand_icon_state = "exwelder"
+	icon_state = "welder_ex"
+	inhand_icon_state = "welder_ex"
 	max_fuel = 40
 	custom_materials = list(/datum/material/iron=70, /datum/material/glass=120)
 	var/last_gen = 0
-	change_icons = 0
+	gauge_indicator = FALSE
 	can_off_process = 1
 	light_intensity = 1
 	toolspeed = 0.5
@@ -409,8 +444,10 @@
 	name = "brass welding tool"
 	desc = "A brass welder that seems to constantly refuel itself. It is faintly warm to the touch."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
-	icon_state = "brasswelder"
-	inhand_icon_state = "brasswelder"
+	icon_state = "welder_brass"
+	inhand_icon_state = "welder_brass"
+	gauge_icon_state = null
+	flame_icon_state = "flame_brass"
 	light_intensity = 1
 
 /obj/item/weldingtool/experimental/process(delta_time)

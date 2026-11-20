@@ -206,6 +206,9 @@
 #define LIGHT_COLOR_TUNGSTEN "#FFD6AA"
 /// Barely visible cyan-ish hue, as the doctor prescribed. rgb(240, 250, 250)
 #define LIGHT_COLOR_HALOGEN "#F0FAFA"
+/// Welder lights, somehow so orange they may aswell be sodium lights
+#define LIGHT_COLOR_WELDER "#E9BD44"
+
 
 /// Colors for incident displays
 #define COLOR_DISPLAY_RED "#BE3455"
