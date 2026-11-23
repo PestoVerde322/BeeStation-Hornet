@@ -86,7 +86,7 @@
 		var/ratio = get_fuel() / max_fuel
 		ratio = ceil(ratio*4) * 25
 		var/mutable_appearance/gauge_overlay = mutable_appearance(icon, gauge_icon_state + "_[ratio]")
-		var/mutable_appearance/gauge_emissive = emissive_appearance(icon, gauge_icon_state + "_[ratio]", layer, alpha = 255)
+		var/mutable_appearance/gauge_emissive = emissive_appearance(icon, gauge_icon_state + "_[ratio]", layer, alpha = 128)
 		gauge_overlay.pixel_x = gaugePos_x
 		gauge_overlay.pixel_y = gaugePos_y
 		. += gauge_overlay
