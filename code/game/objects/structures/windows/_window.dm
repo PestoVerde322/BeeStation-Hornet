@@ -29,7 +29,7 @@
 	/// Heat resistance before it fails (glass melting point is 1400 to 1600 c, or 1673 to 1873 k, but breaks earlier due to thermal stress)
 	var/heat_resistance = 800
 	/// Deconstruction speed... self explainatory
-	var/decon_speed = 30
+	var/decon_speed = 3 SECONDS
 	/// Is it fulltile or a pane?
 	var/fulltile = FALSE
 	/// Does it have a border next to a wall and how many in all cardinalities?
@@ -44,12 +44,10 @@
 	var/glass_amount = 1
 	/// Overlay for damaged states, only apply to fulltiles *currently*
 	var/mutable_appearance/crack_overlay
-	var/damagedState = FALSE
 	/// Overlay for trims, only apply to fulltiles *currently*
 	var/mutable_appearance/trim_overlay
 	/// Ignore this, just use explosion_block
 	var/real_explosion_block
-	/// Various sounds effect
 	var/breaksound = "shatter"
 	var/knocksound = 'sound/effects/glassknock.ogg'
 	var/bashsound = 'sound/effects/glassbash.ogg'
@@ -69,55 +67,51 @@
 	if(!QDELETED(src))
 		if(!fulltile)
 			return
-		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK)
 			QUEUE_SMOOTH(src)
-		update_overlays()
-
-/obj/structure/window/update_overlays()
-	. = ..()
-	if(!fulltile)//just in case...
-		return
-	if(damagedState)//true for almost all fulltile
 		var/ratio = atom_integrity / max_integrity
 		ratio = ceil(ratio*4) * 25
-		/*_[rand(0,4)]*/
-		crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
-		add_overlay(crack_overlay)
-		if(ratio > 75)
-			return
-		else
-			cut_overlay(crack_overlay)
-	if(anchored)
+		cut_overlay(crack_overlay)
+		if(ratio <= 75)
+			/*_[rand(0,4)]*/
+			crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
+			add_overlay(crack_overlay)
 		windowSmoothLite()
-	else
-		cut_overlay(trim_overlay)
 
 /// Before I get eviscerated by more skilled coders saying "JUST USE 8-BIT SMOOTHING ALREADY", let me learn how to code in dm properly, and really i can't see an instance
 /// where *that* was used to append an icon on top of an already smoothing item, or any other case like that really, so...
 /obj/structure/window/proc/windowSmoothLite()
 	//we will use a 4 dir way, simply to not lose my sanity to use the icon cutter tool,
 	//ill adviced and not optimized, but it will do the job
+	cut_overlay(trim_overlay)
 	var/border_icon = 'icons/obj/structures/windows.dmi'
-	if(fulltile && anchored)
-		for(var/direction in GLOB.cardinals)
-			var/turf/closed/adj_turf = get_step(src, direction)
-			if(istype(adj_turf, /turf/closed/wall)) //dedicated for walls, anything else goes in the else...
-				bordWall = TRUE
+	if(!anchored)
+		return
+	for(var/direction in GLOB.cardinals)
+		var/turf/closed/adj_turf = get_step(src, direction)
+		if(istype(adj_turf, /turf/closed/wall)) //dedicated for walls, anything else goes in the else...
+			bordWall = TRUE
+			//only used for logging
+			bordWallDir += direction
+			if(debug_window)
+				trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
+				add_overlay(trim_overlay)
+			continue
+		else
+			for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
+				bordDoor = TRUE
 				//only used for logging
-				bordWallDir += direction
+				bordDoorDir += direction
 				if(debug_window)
-					trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]", alpha = 180)
+					trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
 					add_overlay(trim_overlay)
 				continue
-			else
-				for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
-					bordDoor = TRUE
-					//only used for logging
-					bordDoorDir += direction
-					if(debug_window)
-						trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]", alpha = 180)
-						add_overlay(trim_overlay)
-					continue
+
+//This proc is used to update the icons of nearby windows.eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+/obj/structure/window/proc/update_nearby_icons()
+	update_appearance()
+	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -156,27 +150,21 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		setDir(direct)
 	if(reinf && anchored)
 		state = WINDOW_SCREWED_TO_FRAME
-		windowSmoothLite()
-
 	air_update_turf(TRUE, TRUE)
-
 	if(fulltile)
 		setDir()
 		obj_flags &= ~BLOCKS_CONSTRUCTION_DIR
 		obj_flags &= ~IGNORE_DENSITY
+		windowSmoothLite() //update_icon just won't do it... don't ask
 	else
 		AddElement(/datum/element/simple_rotation, ROTATION_NEEDS_ROOM, post_rotation_proccall = PROC_REF(post_rotation))
-
 	//windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
-
 	AddElement(/datum/element/atmos_sensitive)
-
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 	)
-
 	if (flags_1 & ON_BORDER_1)
 		AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -184,7 +172,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	. = ..()
 	if (flags_1 & ON_BORDER_1)
 		return
-
 	//Adds the component only once. We do it here & not in Initialize() because there are tons of windows & we don't want to add to their init times
 	LoadComponent(/datum/component/leanable, dropping)
 
@@ -285,65 +272,92 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		return
 	..()
 
-/obj/structure/window/attackby(obj/item/I, mob/living/user, list/modifiers)
+/obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armour_penetration = 0)
+	. = ..()
+	if(.) //received damage
+		update_nearby_icons()
+
+/obj/structure/window/repair_damage(amount)
+	. = ..()
+	update_nearby_icons()
+
+/obj/structure/window/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(!can_be_reached(user))
 		return TRUE //skip the afterattack
-
 	add_fingerprint(user)
-
-	if(I.tool_behaviour == TOOL_WELDER)
-		if(atom_integrity < max_integrity)
-			if(!I.tool_start_check(user, amount = 0))
-				return
-			to_chat(user, span_notice("You begin repairing [src]..."))
-			if(I.use_tool(src, user, 40, volume = 50))
-				atom_integrity = max_integrity
-				update_nearby_icons()
-				to_chat(user, span_notice("You repair [src]."))
-		else
-			to_chat(user, span_warning("[src] is already in good condition!"))
-		return
-
-	if(!(flags_1&NODECONSTRUCT_1))
-		if(I.tool_behaviour == TOOL_SCREWDRIVER)
-			I.play_tool_sound(src, 75)
-			if(reinf)
-				if(state == WINDOW_SCREWED_TO_FRAME || state == WINDOW_IN_FRAME)
-					to_chat(user, span_notice("You begin to [state == WINDOW_SCREWED_TO_FRAME ? "unscrew the window from":"screw the window to"] the frame..."))
-					if(I.use_tool(src, user, decon_speed, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
-						state = (state == WINDOW_IN_FRAME ? WINDOW_SCREWED_TO_FRAME : WINDOW_IN_FRAME)
-						to_chat(user, span_notice("You [state == WINDOW_IN_FRAME ? "unfasten the window from":"fasten the window to"] the frame."))
-				else if(state == WINDOW_OUT_OF_FRAME)
-					to_chat(user, span_notice("You begin to [anchored ? "unscrew the frame from":"screw the frame to"] the floor..."))
-					if(I.use_tool(src, user, decon_speed, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
-						set_anchored(!anchored)
-						to_chat(user, span_notice("You [anchored ? "fasten the frame to":"unfasten the frame from"] the floor."))
-			else //if we're not reinforced, we don't need to check or update state
-				to_chat(user, span_notice("You begin to [anchored ? "unscrew the window from":"screw the window to"] the floor..."))
-				if(I.use_tool(src, user, decon_speed, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
-					set_anchored(!anchored)
-					to_chat(user, span_notice("You [anchored ? "fasten the window to":"unfasten the window from"] the floor."))
-			return
-
-
-		else if(I.tool_behaviour == TOOL_CROWBAR && reinf && (state == WINDOW_OUT_OF_FRAME || state == WINDOW_IN_FRAME))
-			to_chat(user, span_notice("You begin to lever the window [state == WINDOW_OUT_OF_FRAME ? "into":"out of"] the frame..."))
-			I.play_tool_sound(src, 75)
-			if(I.use_tool(src, user, decon_speed, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
-				state = (state == WINDOW_OUT_OF_FRAME ? WINDOW_IN_FRAME : WINDOW_OUT_OF_FRAME)
-				to_chat(user, span_notice("You pry the window [state == WINDOW_IN_FRAME ? "into":"out of"] the frame."))
-			return
-
-		else if(I.tool_behaviour == TOOL_WRENCH && !anchored)
-			I.play_tool_sound(src, 75)
-			to_chat(user, span_notice(" You begin to disassemble [src]..."))
-			if(I.use_tool(src, user, decon_speed, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
-				new glass_type(user.loc, glass_amount, TRUE, user)
-				playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
-				to_chat(user, span_notice("You successfully disassemble [src]."))
-				qdel(src)
-			return
 	return ..()
+
+/obj/structure/window/welder_act(mob/living/user, obj/item/tool)
+	if(atom_integrity >= max_integrity)
+		to_chat(user, span_warning("[src] is already in good condition!"))
+		return ITEM_INTERACT_SUCCESS
+	if(!tool.tool_start_check(user, amount = 0))
+		return FALSE
+	to_chat(user, span_notice("You begin repairing [src]..."))
+	if(tool.use_tool(src, user, 4 SECONDS, volume = 50))
+		repair_damage(max_integrity)
+		to_chat(user, span_notice("You repair [src]."))
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/window/screwdriver_act(mob/living/user, obj/item/tool)
+	switch(state)
+		if(WINDOW_SCREWED_TO_FRAME)
+			to_chat(user, span_notice("You begin to unscrew the window from the frame..."))
+			if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+				state = WINDOW_IN_FRAME
+				to_chat(user, span_notice("You unfasten the window from the frame."))
+		if(WINDOW_IN_FRAME)
+			to_chat(user, span_notice("You begin to screw the window to the frame..."))
+			if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+				state = WINDOW_SCREWED_TO_FRAME
+				to_chat(user, span_notice("You fasten the window to the frame."))
+		if(WINDOW_OUT_OF_FRAME)
+			if(anchored)
+				to_chat(user, span_notice("You begin to unscrew the frame from the floor..."))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+					set_anchored(FALSE)
+					to_chat(user, span_notice("You unfasten the frame from the floor."))
+			else
+				to_chat(user, span_notice("You begin to screw the frame to the floor..."))
+				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+					set_anchored(TRUE)
+					to_chat(user, span_notice("You fasten the frame to the floor."))
+			update_nearby_icons()
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/window/wrench_act(mob/living/user, obj/item/tool)
+	if(anchored)
+		return FALSE
+	if(reinf && state >= WINDOW_OUT_OF_FRAME)
+		return FALSE
+	to_chat(user, span_notice("You begin to disassemble [src]..."))
+	if(!tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+		return ITEM_INTERACT_SUCCESS
+	var/obj/item/stack/sheet/G = new glass_type(user.loc, glass_amount)
+	if (!QDELETED(G))
+		G.add_fingerprint(user)
+	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
+	to_chat(user, span_notice("You successfully disassemble [src]."))
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/window/crowbar_act(mob/living/user, obj/item/tool)
+	if(!anchored)
+		return FALSE
+	switch(state)
+		if(WINDOW_IN_FRAME)
+			to_chat(user, span_notice("You begin to lever the window out of the frame..."))
+			if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+				state = WINDOW_OUT_OF_FRAME
+				to_chat(user, span_notice("You pry the window out of the frame."))
+		if(WINDOW_OUT_OF_FRAME)
+			to_chat(user, span_notice("You begin to lever the window back into the frame..."))
+			if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
+				state = WINDOW_SCREWED_TO_FRAME
+				to_chat(user, span_notice("You pry the window back into the frame."))
+		else
+			return FALSE
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/set_anchored(anchorvalue)
 	..()
@@ -373,10 +387,7 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 			return FALSE
 	return TRUE
 
-/obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armour_penetration = 0)
-	. = ..()
-	if(.) //received damage
-		update_nearby_icons()
+
 
 /obj/structure/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -434,12 +445,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(!anchored || !density)
 		return TRUE
 	return !(fulltile || dir == get_dir(loc, T))
-
-//This proc is used to update the icons of nearby windows.
-/obj/structure/window/proc/update_nearby_icons()
-	update_appearance()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return exposed_temperature > T0C + heat_resistance
