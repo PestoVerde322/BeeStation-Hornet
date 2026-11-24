@@ -44,6 +44,7 @@
 	var/glass_amount = 1
 	/// Overlay for damaged states, only apply to fulltiles *currently*
 	var/mutable_appearance/crack_overlay
+	var/damagedState = FALSE
 	/// Overlay for trims, only apply to fulltiles *currently*
 	var/mutable_appearance/trim_overlay
 	/// Ignore this, just use explosion_block
@@ -60,19 +61,63 @@
 	/// If we added a leaning component to ourselves
 	var/added_leaning = FALSE
 
-	///For debug purposes, remove and adjust everything when you're done with
+	///For debug purposes, perhaps, it can stay...
 	var/debug_window = TRUE
 
-/obj/structure/window/corner
-	icon_state = "window_corner"
-	density = FALSE
+//merges adjacent full-tile windows into one
+/obj/structure/window/update_icon()
+	if(!QDELETED(src))
+		if(!fulltile)
+			return
+		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+			QUEUE_SMOOTH(src)
+		update_overlays()
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/spawner, 0)
+/obj/structure/window/update_overlays()
+	. = ..()
+	ratio = ceil(ratio*4) * 25
+	if(!fulltile)//just in case...
+		return
+	if(damagedState)//true for almost all fulltile
+		var/ratio = atom_integrity / max_integrity
+		/*_[rand(0,4)]*/
+		crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
+		add_overlay(crack_overlay)
+		if(ratio > 75)
+			return
+		else
+			cut_overlay(crack_overlay)
+	if(anchored)
+		windowSmoothLite()
+	else
+		cut_overlay(trim_overlay)
 
-/obj/structure/window/corner/unanchored
-	anchored = FALSE
-
-MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)
+/// Before I get eviscerated by more skilled coders saying "JUST USE 8-BIT SMOOTHING ALREADY", let me learn how to code in dm properly, and really i can't see an instance
+/// where *that* was used to append an icon on top of an already smoothing item, or any other case like that really, so...
+/obj/structure/window/proc/windowSmoothLite()
+	//we will use a 4 dir way, simply to not lose my sanity to use the icon cutter tool,
+	//ill adviced and not optimized, but it will do the job
+	var/border_icon = 'icons/obj/structures/windows.dmi'
+	if(fulltile && anchored)
+		for(var/direction in GLOB.cardinals)
+			var/turf/closed/adj_turf = get_step(src, direction)
+			if(istype(adj_turf, /turf/closed/wall)) //dedicated for walls, anything else goes in the else...
+				bordWall = TRUE
+				//only used for logging
+				bordWallDir += direction
+				if(debug_window)
+					trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]", alpha = 180)
+					add_overlay(trim_overlay)
+				continue
+			else
+				for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
+					bordDoor = TRUE
+					//only used for logging
+					bordDoorDir += direction
+					if(debug_window)
+						trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]", alpha = 180)
+						add_overlay(trim_overlay)
+					continue
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -396,22 +441,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
-//merges adjacent full-tile windows into one
-/obj/structure/window/update_icon()
-	if(!QDELETED(src))
-		if(!fulltile)
-			return
-		var/ratio = atom_integrity / max_integrity
-		ratio = ceil(ratio*4) * 25
-		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-			QUEUE_SMOOTH(src)
-		cut_overlay(crack_overlay)
-		if(ratio > 75)
-			return
-			/*_[rand(0,4)]*/
-		crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
-		add_overlay(crack_overlay)
-
 /obj/structure/window/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return exposed_temperature > T0C + heat_resistance
 
@@ -428,30 +457,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		return 0
 	return 1
 
-/// Before I get eviscerated by more skilled coders saying "JUST USE 8-BIT SMOOTHING ALREADY", let me learn how to code in dm properly, and really i can't see an instance
-/// where *that* was used to append an icon on top of an already smoothing item, or any other case like that really, so...
-/obj/structure/window/proc/windowSmoothLite()
-	if(fulltile)
-		for(var/direction in GLOB.cardinals) //we will use a 4 dir way, simply to not lose my sanity to use the icon cutter tool, not optimized, but it will do the job
-			var/turf/closed/adj_turf = get_step(src, direction)
-			var/debugAppearance = null
-			if(istype(adj_turf, /turf/closed/wall))
-				bordWall = TRUE
-				bordWallDir += direction
-				if(debug_window)
-					debugAppearance = mutable_appearance('icons/effects/mapping_helpers.dmi', "4dir_helper_red", alpha = 180)
-					add_overlay(debugAppearance)
-				continue
-			else
-				for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
-					bordDoor = TRUE
-					bordDoorDir += direction
-					if(debug_window)
-						var/mutable_appearance/dirDebug_door = mutable_appearance('icons/effects/mapping_helpers.dmi', "4dir_helper_green", alpha = 180)
-						debugAppearance = make_mutable_appearance_directional(dirDebug_door, bordDoorDir)
-						add_overlay(debugAppearance)
-					continue
-
 /obj/structure/window/GetExplosionBlock()
 	return reinf && fulltile ? real_explosion_block : 0
 
@@ -461,3 +466,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/spawner, 0)
 	anchored = FALSE
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/unanchored/spawner, 0)
+
+/obj/structure/window/corner
+	icon_state = "window_corner"
+	density = FALSE
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/spawner, 0)
+
+/obj/structure/window/corner/unanchored
+	anchored = FALSE
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/corner/unanchored/spawner, 0)

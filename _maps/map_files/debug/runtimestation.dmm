@@ -2118,6 +2118,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/engineering/main)
+"FI" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/exit/departure_lounge)
 "FR" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -2209,6 +2213,10 @@
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"Io" = (
+/obj/effect/spawner/structure/window,
+/turf/open/floor/holofloor/plating,
+/area/station/holodeck/debug)
 "It" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
 /obj/effect/spawner/structure/window/reinforced,
@@ -6949,7 +6957,7 @@ qT
 qT
 qT
 qT
-qT
+Io
 qT
 qT
 qT
@@ -8704,7 +8712,7 @@ dl
 dx
 dE
 cS
-fO
+FI
 fO
 fO
 gf

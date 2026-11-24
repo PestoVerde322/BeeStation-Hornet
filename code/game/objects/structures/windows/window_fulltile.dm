@@ -10,6 +10,7 @@
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 100
 	fulltile = TRUE
+	damagedState = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
 	obj_flags = CAN_BE_HIT
 	glass_amount = 2
