@@ -67,7 +67,7 @@
 	if(!QDELETED(src))
 		if(!fulltile)
 			return
-		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK)
+		if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 			QUEUE_SMOOTH(src)
 		var/ratio = atom_integrity / max_integrity
 		ratio = ceil(ratio*4) * 25
