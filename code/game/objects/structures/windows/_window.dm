@@ -75,11 +75,11 @@
 
 /obj/structure/window/update_overlays()
 	. = ..()
-	ratio = ceil(ratio*4) * 25
 	if(!fulltile)//just in case...
 		return
 	if(damagedState)//true for almost all fulltile
 		var/ratio = atom_integrity / max_integrity
+		ratio = ceil(ratio*4) * 25
 		/*_[rand(0,4)]*/
 		crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
 		add_overlay(crack_overlay)
@@ -180,7 +180,7 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 	if (flags_1 & ON_BORDER_1)
 		AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/structure/window/MouseDrop_T(atom/dropping, mob/user, params)
+/obj/structure/window/mouse_drop_receive(atom/dropping, mob/user, params)
 	. = ..()
 	if (flags_1 & ON_BORDER_1)
 		return
