@@ -253,7 +253,7 @@ WANTS_POWER_NODE(/obj/structure/grille)
 				else if(istype(W, /obj/item/stack/sheet/titaniumglass))
 					WD = new/obj/structure/window/fulltile/reinforced/shuttle(drop_location())
 				else if(istype(W, /obj/item/stack/sheet/plastitaniumglass))
-					WD = new/obj/structure/window/fulltile/reinforced/plasma/plastitanium(drop_location())
+					WD = new/obj/structure/window/fulltile/reinforced/shuttle/plastitanium(drop_location())
 				else
 					WD = new/obj/structure/window/fulltile(drop_location()) //normal window
 				WD.setDir(dir_to_set)

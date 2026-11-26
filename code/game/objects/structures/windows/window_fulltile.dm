@@ -10,6 +10,7 @@
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_AIRLOCK)
 	max_integrity = 100
 	fulltile = TRUE
+	trim_enabled = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
 	obj_flags = CAN_BE_HIT
 	glass_amount = 2
@@ -64,6 +65,7 @@
 	decon_speed = 10
 	can_atmos_pass = ATMOS_PASS_YES
 	resistance_flags = FLAMMABLE
+	trim_enabled = FALSE
 	armor_type = /datum/armor/none
 	knocksound = "pageturn"
 	bashsound = 'sound/weapons/slashmiss.ogg'
@@ -189,12 +191,13 @@
 	base_icon_state = "shuttle_window"
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE, SMOOTH_GROUP_SHUTTLE_PARTS)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE)
-	max_integrity = 500
+	trim_enabled = FALSE
+	max_integrity = 300
 	heat_resistance = 1600
 	armor_type = /datum/armor/window_titanium
-	explosion_block = 3
+	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/titaniumglass
-	ricochet_chance_mod = 0.9
+	ricochet_chance_mod = 0.75
 
 /obj/structure/window/fulltile/reinforced/shuttle/unanchored
 	anchored = FALSE
@@ -208,7 +211,7 @@
 /obj/structure/window/fulltile/reinforced/shuttle/unanchored
 	anchored = FALSE
 
-/obj/structure/window/fulltile/reinforced/plasma/plastitanium
+/obj/structure/window/fulltile/reinforced/shuttle/plastitanium
 	name = "plastitanium window"
 	desc = "A durable looking window made of an alloy of of plasma and titanium."
 	icon = 'icons/obj/smooth_structures/windows/plastitanium_window.dmi'
@@ -216,14 +219,18 @@
 	base_icon_state = "plastitanium_window"
 	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_SHUTTLE_PARTS)
 	canSmoothWith = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM)
-	max_integrity = 200
-	obj_flags = CAN_BE_HIT
-	heat_resistance = 1600
+	max_integrity = 400
+	heat_resistance = 1900
 	plasma_made = FALSE //IT'S NOT MADE OF PLASMA!
 	armor_type = /datum/armor/window_plastitanium
 	explosion_block = 3
 	glass_type = /obj/item/stack/sheet/plastitaniumglass
+	ricochet_chance_mod = 0.9
 
-/obj/structure/window/fulltile/reinforced/plasma/plastitanium/unanchored
+
+/obj/structure/window/fulltile/reinforced/shuttle/narsie_act()
+	return //Evil knows evil... i think?
+
+/obj/structure/window/fulltile/reinforced/shuttle/plastitanium/unanchored
 	anchored = FALSE
 

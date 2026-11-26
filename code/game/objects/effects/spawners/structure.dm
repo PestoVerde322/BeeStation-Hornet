@@ -193,7 +193,7 @@ again.
 /obj/effect/spawner/structure/window/reinforced/plasma/plastitanium
 	name = "plastitanium window spawner"
 	icon_state = "plastitaniumwindow_spawner"
-	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/plasma/plastitanium)
+	spawn_list = list(/obj/structure/grille, /obj/structure/window/fulltile/reinforced/shuttle/plastitanium)
 
 
 //ice window

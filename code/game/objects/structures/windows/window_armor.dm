@@ -3,21 +3,21 @@
 	acid = 100
 
 /datum/armor/glass_window_reinforced
-	melee = 50
+	melee = 30
 	bomb = 25
 	fire = 80
 	acid = 100
 
 /datum/armor/plasma_window
-	melee = 75
+	melee = 45
 	bullet = 5
 	bomb = 45
 	fire = 99
 	acid = 100
 
 /datum/armor/plasma_window_reinforced
-	melee = 85
-	bullet = 20
+	melee = 75
+	bullet = 15
 	bomb = 60
 	fire = 99
 	acid = 100
@@ -26,24 +26,26 @@
 	melee = 55
 	bullet = 20
 	bomb = 60
-	fire = 100
+	fire = 99
 	acid = 100
 
 /datum/armor/depleted_uranium_window_reinforced
 	melee = 65
 	bullet = 20
 	bomb = 60
-	fire = 100
+	fire = 99
 	acid = 100
 
 /datum/armor/window_titanium
 	melee = 50
+	bullet = 20
 	bomb = 50
-	fire = 80
+	fire = 99
 	acid = 100
 
 /datum/armor/window_plastitanium
 	melee = 60
+	bullet = 40
 	bomb = 75
-	fire = 80
+	fire = 99
 	acid = 100

@@ -5,7 +5,7 @@
 	icon_state = "window"
 	density = TRUE
 	layer = ABOVE_OBJ_LAYER // Above doors
-	pressure_resistance = 4*ONE_ATMOSPHERE
+	pressure_resistance = 4 * ONE_ATMOSPHERE
 	anchored = TRUE
 	flags_1 = ON_BORDER_1
 	obj_flags = CAN_BE_HIT | BLOCKS_CONSTRUCTION_DIR | IGNORE_DENSITY
@@ -46,6 +46,7 @@
 	var/mutable_appearance/crack_overlay
 	/// Overlay for trims, only apply to fulltiles *currently*
 	var/mutable_appearance/trim_overlay
+	var/trim_enabled = FALSE
 	/// Ignore this, just use explosion_block
 	var/real_explosion_block
 	var/breaksound = "shatter"
@@ -60,7 +61,6 @@
 	var/added_leaning = FALSE
 
 	///For debug purposes, perhaps, it can stay...
-	var/debug_window = TRUE
 
 //merges adjacent full-tile windows into one
 /obj/structure/window/update_icon()
@@ -73,10 +73,11 @@
 		ratio = ceil(ratio*4) * 25
 		cut_overlay(crack_overlay)
 		if(ratio <= 75)
-			/*_[rand(0,4)]*/
-			crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]", -(layer+0.1))
+			crack_overlay = mutable_appearance('icons/obj/structures/windows.dmi', "damage_[ratio]_[rand(0,2)]", -(layer+0.1), alpha = rand(200,254) )
+			crack_overlay.color = rgb(rand(225,255), rand(225,255), rand(225,255))
 			add_overlay(crack_overlay)
-		windowSmoothLite()
+		if(trim_enabled)
+			windowSmoothLite()
 
 /// Before I get eviscerated by more skilled coders saying "JUST USE 8-BIT SMOOTHING ALREADY", let me learn how to code in dm properly, and really i can't see an instance
 /// where *that* was used to append an icon on top of an already smoothing item, or any other case like that really, so...
@@ -91,23 +92,17 @@
 		var/turf/closed/adj_turf = get_step(src, direction)
 		if(istype(adj_turf, /turf/closed/wall)) //dedicated for walls, anything else goes in the else...
 			bordWall = TRUE
-			//only used for logging
-			bordWallDir += direction
-			if(debug_window)
-				trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
-				add_overlay(trim_overlay)
+			trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
+			add_overlay(trim_overlay)
 			continue
 		else
 			for(var/obj/machinery/door/STUCK_DOOR_STUCK_PLEASE_I_BEG_YOU in adj_turf)
 				bordDoor = TRUE
-				//only used for logging
-				bordDoorDir += direction
-				if(debug_window)
-					trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
-					add_overlay(trim_overlay)
+				trim_overlay = mutable_appearance(border_icon, "window_trim_[direction]")
+				add_overlay(trim_overlay)
 				continue
 
-//This proc is used to update the icons of nearby windows.eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+//This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
 	update_appearance()
 	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
@@ -117,15 +112,6 @@
 	. = ..()
 	if(fulltile)
 		. += span_notice("That's an unusually <b>big</b> window... Maybe it has an hollow padding?")
-		if(debug_window)
-			if(bordWall)
-				. += span_notice("<b>DEBUG:</b> bordering a wall - dir:")
-				for(var/ofWalldirs in bordWallDir)
-					. += span_notice("[ofWalldirs]")
-			if(bordDoor)
-				. += span_notice("<b>DEBUG:</b> bordering a door - dir:")
-				for(var/ofDoordirs in bordDoorDir)
-					. += span_notice("[ofDoordirs]")
 	if(reinf)
 		. += span_notice("This window is reinforced with rebars.")
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
@@ -155,7 +141,8 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		setDir()
 		obj_flags &= ~BLOCKS_CONSTRUCTION_DIR
 		obj_flags &= ~IGNORE_DENSITY
-		windowSmoothLite() //update_icon just won't do it... don't ask
+		if(trim_enabled)
+			windowSmoothLite() //update_icon just won't do it... don't ask
 	else
 		AddElement(/datum/element/simple_rotation, ROTATION_NEEDS_ROOM, post_rotation_proccall = PROC_REF(post_rotation))
 	//windows only block while reinforced and fulltile, so we'll use the proc
@@ -386,8 +373,6 @@ CREATION_TEST_IGNORE_SUBTYPES(/obj/structure/window)
 		if(!blocker.CanPass(user, checking_dir))
 			return FALSE
 	return TRUE
-
-
 
 /obj/structure/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
